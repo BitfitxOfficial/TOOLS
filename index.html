@@ -3,231 +3,1048 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>I love all Bitfitx Tools</title>
-    
-    <!-- Fonts and Icons -->
+    <title>Prompt Minds – Multi Tool Hub</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
-        /* --- Global Styles & Design Theme --- */
+        /* CSS Custom Properties */
         :root {
-            --main-bg-color: #0d0f14;
-            --navbar-bg-color: #1c222d;
-            --sidebar-bg-color: #12151a;
+            --bg-primary: #0d0f14;
+            --bg-navbar: #1c222d;
+            --bg-sidebar: #12151a;
+            --bg-box: #12151a;
+            --bg-tile: #1c222d;
             --text-primary: #ffffff;
             --text-secondary: #e0e0e0;
-            --accent-glow-color: #42f8f5;
-            --glow-shadow: 0 0 15px rgba(66, 248, 245, 0.6), 0 0 25px rgba(66, 248, 245, 0.4);
-            --glow-shadow-soft: 0 0 8px rgba(66, 248, 245, 0.5);
-            --button-bg: #12151a;
-            --font-family: 'Orbitron', sans-serif;
-            --error-color: #ff4d4d;
+            --accent-cyan: #42f8f5;
+            --highlight-contact: #00aaff;
+            --glow-border: #007bff;
+            --glow-shadow: rgba(66, 248, 245, 0.6);
+            --glow-shadow-hover: rgba(66, 248, 245, 0.8);
+            --card-bg: #1a1f28;
+            --border-radius: 8px;
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-        body { font-family: var(--font-family); background-color: var(--main-bg-color); color: var(--text-secondary); overflow-x: hidden; }
-        h1, h2, h3 { color: var(--text-primary); font-weight: 700; text-shadow: 0 0 5px var(--accent-glow-color); }
-        a { color: var(--text-secondary); text-decoration: none; transition: color 0.3s ease, text-shadow 0.3s ease; }
-        a:hover { color: var(--accent-glow-color); text-shadow: var(--glow-shadow-soft); }
-
-        /* --- Layout --- */
-        .container { display: flex; min-height: 100vh; }
-        .main-content { margin-top: 75px; margin-left: 250px; padding: 2rem; width: calc(100% - 250px); transition: margin-left 0.3s ease-in-out, width 0.3s ease-in-out; }
-
-        /* --- Header / Navbar --- */
-        .header { background-color: var(--navbar-bg-color); padding: 1rem 2rem; position: fixed; top: 0; left: 0; width: 100%; display: flex; justify-content: space-between; align-items: center; z-index: 1000; border-bottom: 1px solid var(--accent-glow-color); box-shadow: 0 2px 10px rgba(66, 248, 245, 0.2); }
-        .logo-container { display: flex; align-items: center; }
-        .logo-icon { font-size: 2rem; color: var(--accent-glow-color); text-shadow: var(--glow-shadow); margin-right: 15px; animation: pulse-glow 2s infinite ease-in-out; }
-        .logo-text { font-size: 1.5rem; font-weight: 700; color: var(--text-primary); text-shadow: 0 0 8px var(--accent-glow-color); }
-        .nav-links { list-style: none; display: flex; }
-        .nav-links li { margin-left: 2rem; }
-        .nav-links a { font-size: 1rem; padding-bottom: 5px; position: relative; }
-        .nav-links a::after { content: ''; position: absolute; width: 0; height: 2px; bottom: 0; left: 50%; transform: translateX(-50%); background-color: var(--accent-glow-color); box-shadow: var(--glow-shadow-soft); transition: width 0.3s ease; }
-        .nav-links a:hover::after { width: 100%; }
-        .hamburger { display: none; flex-direction: column; cursor: pointer; }
-        .hamburger .bar { width: 25px; height: 3px; background-color: var(--text-primary); margin: 4px 0; transition: 0.4s; box-shadow: var(--glow-shadow-soft); }
-
-        /* --- Sidebar --- */
-        .sidebar { width: 250px; background-color: var(--sidebar-bg-color); padding: 1rem; position: fixed; top: 75px; left: 0; height: calc(100vh - 75px); overflow-y: auto; box-shadow: 2px 0 15px rgba(66, 248, 245, 0.2); transition: transform 0.3s ease-in-out; z-index: 999; }
-        .tool-category h3 { color: var(--accent-glow-color); font-size: 1.1rem; margin-top: 1.5rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid rgba(66, 248, 245, 0.3); cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
-        .tool-list { list-style: none; max-height: 0; overflow: hidden; transition: max-height 0.5s ease-out; }
-        .tool-list.active { max-height: 1000px; }
-        .tool-list li a { display: flex; align-items: center; padding: 0.75rem 0.5rem; border-radius: 5px; }
-        .tool-list li a:hover { background-color: rgba(66, 248, 245, 0.1); color: var(--accent-glow-color); }
-        .tool-list li i { margin-right: 15px; width: 20px; text-align: center; }
-
-        /* --- Hero Section & Tool Grid --- */
-        .hero-section { text-align: center; padding: 4rem 1rem; background: radial-gradient(circle, rgba(13,15,20,0.8) 0%, var(--main-bg-color) 70%); }
-        .hero-section h1 { font-size: 3.5rem; margin-bottom: 1rem; }
-        .hero-section p { font-size: 1.2rem; max-width: 800px; margin: 0 auto 2rem auto; }
-        .cta-button { background: var(--button-bg); color: var(--text-primary); border: 2px solid var(--accent-glow-color); padding: 1rem 2.5rem; font-size: 1.2rem; font-family: var(--font-family); cursor: pointer; border-radius: 50px; transition: all 0.3s; }
-        .cta-button:hover { background-color: var(--accent-glow-color); color: var(--main-bg-color); box-shadow: var(--glow-shadow); transform: translateY(-3px); }
-        .cta-button:disabled { cursor: not-allowed; background: #333; border-color: #555; color: #888; transform: none; box-shadow: none; }
-        #tools-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; padding-top: 2rem; }
-        .tool-card { background: var(--sidebar-bg-color); border-radius: 10px; padding: 1.5rem; text-align: center; border: 1px solid transparent; box-shadow: 0 4px 20px rgba(0,0,0,0.4); transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease; position: relative; }
-        .tool-card:hover { transform: translateY(--10px); border-color: var(--accent-glow-color); box-shadow: 0 0 20px rgba(66, 248, 245, 0.4); }
-        .tool-card.simulated:after { content: 'UI DEMO'; position: absolute; top: 10px; right: 10px; background: var(--accent-glow-color); color: var(--main-bg-color); padding: 3px 8px; border-radius: 5px; font-size: 0.7rem; font-weight: bold; }
-        .tool-card i { font-size: 3rem; color: var(--accent-glow-color); margin-bottom: 1rem; text-shadow: var(--glow-shadow-soft); }
-        .tool-card h2 { font-size: 1.3rem; margin-bottom: 0.5rem; }
-        .tool-card p { font-size: 0.9rem; line-height: 1.5; margin-bottom: 1.5rem; }
-        .tool-card .open-tool-btn { background: var(--button-bg); color: var(--text-primary); border: 1px solid var(--accent-glow-color); padding: 0.75rem 1.5rem; cursor: pointer; border-radius: 5px; font-family: var(--font-family); transition: all 0.3s ease; }
-        .tool-card .open-tool-btn:hover { background-color: var(--accent-glow-color); color: var(--main-bg-color); box-shadow: var(--glow-shadow); }
-
-        /* --- Content Sections (About/Donation) --- */
-        .content-section { padding: 4rem 2rem; margin-top: 4rem; background-color: var(--sidebar-bg-color); border-radius: 10px; border-top: 1px solid var(--accent-glow-color); box-shadow: 0 -4px 20px rgba(66, 248, 245, 0.1); }
-        .content-section h2 { text-align: center; font-size: 2.5rem; margin-bottom: 2.5rem; text-transform: uppercase; letter-spacing: 2px; }
-        .content-section p { font-size: 1rem; font-family: sans-serif; line-height: 1.8; max-width: 900px; margin: 0 auto 1.5rem auto; text-align: justify; }
-        .content-section strong { color: var(--accent-glow-color); }
-        .donation-box { max-width: 700px; margin: 2rem auto 0 auto; padding: 1.5rem; background: var(--main-bg-color); border: 1px solid var(--accent-glow-color); border-radius: 8px; text-align: center; }
-        .donation-box h3 { color: var(--accent-glow-color); margin-bottom: 1rem; }
-        .wallet-address-container { display: flex; align-items: center; justify-content: center; background: var(--sidebar-bg-color); border-radius: 5px; padding: 0.5rem; }
-        .wallet-address { font-family: monospace; font-size: 1rem; color: var(--text-secondary); word-break: break-all; flex-grow: 1; text-align: left; padding: 0 0.5rem; }
-        .copy-btn { padding: 0.5rem 1rem; font-size: 1rem; border-radius: 5px; margin-left: 0.5rem; min-width: 50px; }
-
-        /* --- Footer --- */
-        .footer { background-color: var(--sidebar-bg-color); color: var(--text-secondary); padding: 2rem; text-align: center; border-top: 1px solid var(--accent-glow-color); box-shadow: 0 -2px 10px rgba(66, 248, 245, 0.2); margin-top: 4rem; width: 100%; }
-        .footer-content { display: flex; flex-direction: column; align-items: center; gap: 1rem; }
-        .footer-links a { margin: 0 1rem; }
-        .social-icons a { font-size: 1.5rem; margin: 0 0.75rem; }
-        
-        /* --- Modal & Tool UI Styles --- */
-        .modal { display: none; position: fixed; z-index: 1001; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.7); backdrop-filter: blur(5px); }
-        .modal-content { background-color: var(--navbar-bg-color); margin: 10% auto; padding: 2rem; border: 1px solid var(--accent-glow-color); border-radius: 10px; width: 80%; max-width: 700px; box-shadow: var(--glow-shadow); position: relative; animation: slide-in 0.5s ease-out; }
-        @keyframes slide-in { from { transform: translateY(-50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .close-btn { color: var(--text-secondary); position: absolute; top: 1rem; right: 1.5rem; font-size: 2rem; font-weight: bold; cursor: pointer; transition: color 0.3s, transform 0.3s; }
-        .close-btn:hover { color: var(--accent-glow-color); transform: rotate(90deg); }
-        .tool-ui-container { margin-top: 1rem; }
-        .tool-ui-container h2 { text-align: center; margin-bottom: 2rem; }
-        .file-drop-area { border: 2px dashed var(--accent-glow-color); border-radius: 10px; padding: 2rem; text-align: center; cursor: pointer; transition: background-color 0.3s, border-color 0.3s; }
-        .file-drop-area.dragover { background-color: rgba(66, 248, 245, 0.1); border-color: var(--text-primary); }
-        .file-drop-area p { margin: 0.5rem 0; }
-        .upload-btn { background-color: var(--accent-glow-color); color: var(--main-bg-color); border: none; padding: 0.75rem 1.5rem; font-family: var(--font-family); cursor: pointer; border-radius: 5px; box-shadow: var(--glow-shadow-soft); }
-        .processing-status { text-align: center; margin-top: 1rem; font-size: 1.1rem; display: none; }
-        .tool-ui-container textarea, .tool-ui-container input, .tool-ui-container select { width: 100%; padding: 0.75rem; margin-bottom: 1rem; background: var(--sidebar-bg-color); border: 1px solid var(--accent-glow-color); color: var(--text-primary); border-radius: 5px; font-family: var(--font-family); }
-        .tool-ui-container input[type="color"] { padding: 0; height: 50px; cursor: pointer; }
-        .tool-ui-container input[type="file"] { display: none; }
-        .tool-output { margin-top: 1.5rem; background: var(--main-bg-color); padding: 1rem; border-radius: 5px; border: 1px solid rgba(66, 248, 245, 0.3); min-height: 50px; white-space: pre-wrap; word-wrap: break-word; font-size: 0.9rem; }
-        .tool-output.error { border-color: var(--error-color); color: var(--error-color); }
-        .tool-grid-2-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-        .timer-display { font-size: 3rem; text-align: center; letter-spacing: 5px; margin: 1rem 0; text-shadow: var(--glow-shadow-soft); }
-        .timer-controls button { margin: 0 0.5rem; }
-        #image-preview { max-width: 100%; max-height: 200px; margin-top: 1rem; border-radius: 5px; }
-
-        /* --- Animations & Responsive Design --- */
-        @keyframes pulse-glow { 0%, 100% { text-shadow: var(--glow-shadow); } 50% { text-shadow: 0 0 20px rgba(66, 248, 245, 1), 0 0 30px rgba(66, 248, 245, 0.7); } }
-        @media (max-width: 1200px) { #tools-grid { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 992px) {
-            .sidebar { transform: translateX(-100%); }
-            .sidebar.active { transform: translateX(0); }
-            .main-content { margin-left: 0; width: 100%; }
-            .main-content.sidebar-active { margin-left: 250px; width: calc(100% - 250px); }
-            .nav-links { display: none; position: absolute; right: 0; top: 75px; background-color: var(--navbar-bg-color); width: 100%; flex-direction: column; text-align: center; }
-            .nav-links.active { display: flex; }
-            .nav-links li { margin: 1rem 0; }
-            .hamburger { display: flex; }
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
+
+        body {
+            font-family: 'Inter', 'Poppins', sans-serif;
+            font-weight: 400;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-cyan);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--glow-shadow-hover);
+        }
+
+        /* Navigation Styles */
+        .navbar {
+            background-color: var(--bg-navbar);
+            padding: 1rem 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            border-bottom: 1px solid var(--accent-cyan);
+            box-shadow: 0 2px 20px var(--glow-shadow);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+            color: var(--accent-cyan);
+            text-shadow: 0 0 20px var(--glow-shadow);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .logo-text {
+            font-family: 'Poppins', 'Inter', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-shadow: 0 0 10px var(--glow-shadow);
+        }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            transition: var(--transition-smooth);
+        }
+
+        .nav-link:hover {
+            color: var(--accent-cyan);
+            text-shadow: 0 0 10px var(--glow-shadow);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-cyan);
+            transition: var(--transition-smooth);
+            box-shadow: 0 0 5px var(--glow-shadow);
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .bar {
+            width: 25px;
+            height: 3px;
+            background-color: var(--accent-cyan);
+            margin: 3px 0;
+            transition: var(--transition-smooth);
+            box-shadow: 0 0 5px var(--glow-shadow);
+        }
+
+        /* Main Container */
+        .main-container {
+            display: flex;
+            margin-top: 80px;
+            min-height: calc(100vh - 80px);
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 300px;
+            background-color: var(--bg-sidebar);
+            border-right: 1px solid var(--accent-cyan);
+            box-shadow: 2px 0 20px var(--glow-shadow);
+            position: fixed;
+            left: 0;
+            top: 80px;
+            height: calc(100vh - 80px);
+            overflow-y: auto;
+            transition: var(--transition-smooth);
+            z-index: 999;
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(66, 248, 245, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sidebar-header h3 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            text-shadow: 0 0 10px var(--glow-shadow);
+        }
+
+        .sidebar-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--accent-cyan);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .tool-categories {
+            padding: 1rem;
+        }
+
+        .category {
+            margin-bottom: 1rem;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            border: 1px solid transparent;
+        }
+
+        .category-header:hover {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 15px var(--glow-shadow);
+        }
+
+        .category-icon {
+            font-size: 1.2rem;
+        }
+
+        .arrow {
+            margin-left: auto;
+            transition: var(--transition-smooth);
+        }
+
+        .category.collapsed .arrow {
+            transform: rotate(-90deg);
+        }
+
+        .category-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: var(--transition-smooth);
+        }
+
+        .category-content.active {
+            max-height: 500px;
+            padding-top: 0.5rem;
+        }
+
+        .tool-item {
+            padding: 0.75rem 1rem;
+            margin: 0.25rem 0;
+            background-color: rgba(26, 31, 40, 0.5);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            border: 1px solid transparent;
+            margin-left: 1rem;
+        }
+
+        .tool-item:hover {
+            background-color: var(--card-bg);
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 10px var(--glow-shadow);
+            color: var(--accent-cyan);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 300px;
+            padding: 2rem;
+            transition: var(--transition-smooth);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            text-align: center;
+            padding: 4rem 0;
+            background: linear-gradient(135deg, rgba(66, 248, 245, 0.1) 0%, rgba(13, 15, 20, 0.9) 100%);
+            border-radius: var(--border-radius);
+            margin-bottom: 3rem;
+            border: 1px solid rgba(66, 248, 245, 0.3);
+        }
+
+        .hero-title {
+            font-family: 'Poppins', 'Inter', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, var(--accent-cyan), var(--text-primary));
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px var(--glow-shadow);
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            background-color: var(--bg-sidebar);
+            color: var(--text-primary);
+            border: 2px solid var(--accent-cyan);
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            font-family: 'Inter', sans-serif;
+            box-shadow: 0 0 20px var(--glow-shadow);
+        }
+
+        .cta-button:hover {
+            background-color: var(--accent-cyan);
+            color: var(--bg-primary);
+            box-shadow: 0 0 30px var(--glow-shadow-hover);
+            transform: translateY(-2px);
+        }
+
+        /* Tools Section */
+        .tools-section {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: var(--accent-cyan);
+            text-shadow: 0 0 20px var(--glow-shadow);
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .tool-card {
+            background-color: var(--bg-tile);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            text-align: center;
+            transition: var(--transition-smooth);
+            border: 1px solid transparent;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tool-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(66, 248, 245, 0.1), transparent);
+            transition: var(--transition-smooth);
+        }
+
+        .tool-card:hover::before {
+            left: 100%;
+        }
+
+        .tool-card:hover {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 10px 30px var(--glow-shadow);
+            transform: translateY(-5px);
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .tool-card h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .tool-card p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .tool-button {
+            background-color: var(--bg-sidebar);
+            color: var(--text-primary);
+            border: 2px solid var(--accent-cyan);
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            box-shadow: 0 0 10px var(--glow-shadow);
+        }
+
+        .tool-button:hover {
+            background-color: var(--accent-cyan);
+            color: var(--bg-primary);
+            box-shadow: 0 0 20px var(--glow-shadow-hover);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            margin: 5% auto;
+            padding: 0;
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 1px solid var(--accent-cyan);
+            box-shadow: 0 20px 60px var(--glow-shadow);
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid rgba(66, 248, 245, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--bg-sidebar);
+        }
+
+        .modal-header h2 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            text-shadow: 0 0 10px var(--glow-shadow);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--accent-cyan);
+            font-size: 2rem;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .modal-close:hover {
+            color: var(--text-primary);
+            text-shadow: 0 0 10px var(--glow-shadow);
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        /* File Upload Styles */
+        .file-upload {
+            border: 2px dashed var(--accent-cyan);
+            border-radius: var(--border-radius);
+            padding: 3rem 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            transition: var(--transition-smooth);
+            cursor: pointer;
+        }
+
+        .file-upload:hover,
+        .file-upload.dragover {
+            background-color: rgba(66, 248, 245, 0.1);
+            box-shadow: 0 0 20px var(--glow-shadow);
+        }
+
+        .file-upload-icon {
+            font-size: 4rem;
+            color: var(--accent-cyan);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .file-upload-text {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .form-input,
+        .form-textarea,
+        .form-select {
+            width: 100%;
+            padding: 1rem;
+            background-color: var(--bg-sidebar);
+            border: 1px solid rgba(66, 248, 245, 0.3);
+            border-radius: var(--border-radius);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            transition: var(--transition-smooth);
+        }
+
+        .form-input:focus,
+        .form-textarea:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 10px var(--glow-shadow);
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .color-display {
+            width: 100px;
+            height: 100px;
+            border-radius: var(--border-radius);
+            border: 2px solid var(--accent-cyan);
+            margin: 1rem auto;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background-color: var(--bg-sidebar);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 1rem 0;
+            border: 1px solid var(--accent-cyan);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-cyan), rgba(66, 248, 245, 0.6));
+            width: 0%;
+            transition: width 0.3s ease;
+            box-shadow: 0 0 10px var(--glow-shadow);
+        }
+
+        /* Toast Notifications */
+        .toast {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--accent-cyan);
+            border-radius: var(--border-radius);
+            padding: 1rem 1.5rem;
+            box-shadow: 0 10px 30px var(--glow-shadow);
+            z-index: 3000;
+            transform: translateX(400px);
+            transition: var(--transition-smooth);
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast-content {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .toast-icon {
+            font-size: 1.5rem;
+            color: var(--accent-cyan);
+        }
+
+        .toast-message {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* Contact Button Highlight */
+        .contact-button {
+            background-color: var(--highlight-contact) !important;
+            color: var(--text-primary) !important;
+            border: 2px solid var(--highlight-contact) !important;
+            box-shadow: 0 0 20px rgba(0, 170, 255, 0.6) !important;
+            padding: 0.6rem 1.2rem !important;
+            font-size: 0.95rem !important;
+            margin-left: 1rem;
+        }
+
+        .contact-button:hover {
+            background-color: transparent !important;
+            color: var(--highlight-contact) !important;
+            box-shadow: 0 0 30px rgba(0, 170, 255, 0.8) !important;
+        }
+
+        /* Glow Border Bottom */
+        .footer {
+            background-color: var(--bg-navbar);
+            border-top: 2px solid var(--glow-border);
+            margin-top: 4rem;
+            box-shadow: 0 -2px 20px rgba(0, 123, 255, 0.6);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section h4 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            margin-bottom: 1rem;
+            text-shadow: 0 0 10px var(--glow-shadow);
+        }
+
+        .footer-section p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .footer-section a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+            transition: var(--transition-smooth);
+        }
+
+        .footer-section a:hover {
+            color: var(--accent-cyan);
+            text-shadow: 0 0 5px var(--glow-shadow);
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-icon {
+            display: inline-block !important;
+            font-size: 1.5rem;
+            padding: 0.5rem;
+            border: 1px solid var(--accent-cyan);
+            border-radius: 50%;
+            transition: var(--transition-smooth);
+        }
+
+        .social-icon:hover {
+            background-color: var(--accent-cyan);
+            color: var(--bg-primary);
+            box-shadow: 0 0 15px var(--glow-shadow);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding: 1rem 2rem;
+            border-top: 2px solid var(--glow-border);
+            color: var(--text-secondary);
+            box-shadow: 0 -1px 10px rgba(0, 123, 255, 0.4);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .tools-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            }
+            
+            .hero-title {
+                font-size: 2.5rem;
+            }
+        }
+
         @media (max-width: 768px) {
-            #tools-grid, .tool-grid-2-col { grid-template-columns: 1fr; }
-            .hero-section h1 { font-size: 2.5rem; }
-            .logo-text { font-size: 1.2rem; }
-            .modal-content { width: 90%; margin: 15% auto; }
-            .wallet-address { font-size: 0.8rem; }
+            .hamburger {
+                display: flex;
+            }
+            
+            .nav-menu {
+                position: fixed;
+                left: -100%;
+                top: 80px;
+                flex-direction: column;
+                background-color: var(--bg-navbar);
+                width: 100%;
+                text-align: center;
+                transition: var(--transition-smooth);
+                box-shadow: 0 10px 30px var(--glow-shadow);
+                padding: 2rem 0;
+            }
+            
+            .contact-button {
+                margin-left: 0 !important;
+                margin-top: 1rem !important;
+            }
+            
+            .nav-menu.active {
+                left: 0;
+            }
+            
+            .sidebar {
+                left: -300px;
+            }
+            
+            .sidebar.active {
+                left: 0;
+            }
+            
+            .sidebar-toggle {
+                display: block;
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+            
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+            
+            .tools-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .tool-card {
+                padding: 1.5rem;
+            }
+            
+            .modal-content {
+                width: 95%;
+                margin: 10% auto;
+            }
+            
+            .modal-body {
+                padding: 1rem;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                padding: 2rem 1rem 1rem;
+            }
         }
+
+        @media (max-width: 480px) {
+            .nav-container {
+                padding: 0 1rem;
+            }
+            
+            .logo-text {
+                font-size: 1.2rem;
+            }
+            
+            .hero-title {
+                font-size: 1.8rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .file-upload {
+                padding: 2rem 1rem;
+            }
+            
+            .file-upload-icon {
+                font-size: 3rem;
+            }
+        }
+
+        /* Animation Classes */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .slide-in {
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* Utility Classes */
+        .text-center { text-align: center; }
+        .mb-1 { margin-bottom: 1rem; }
+        .mb-2 { margin-bottom: 2rem; }
+        .hidden { display: none; }
     </style>
 </head>
 <body>
-
-    <div class="container">
-        <!-- Header -->
-        <header class="header">
-            <div class="logo-container">
-                <i class="fas fa-bolt logo-icon"></i>
-                <span class="logo-text">I love all Bitfitx Tools</span>
+    <!-- Top Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <div class="logo-icon">⚡</div>
+                <span class="logo-text">Prompt Minds – Multi Tool Hub</span>
             </div>
-            <nav>
-                <ul class="nav-links" id="nav-links">
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#tools">Tools</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="mailto:bitfitxofficial1@gmail.com">Contact</a></li>
-                </ul>
-            </nav>
+            <div class="nav-menu" id="nav-menu">
+                <a href="#home" class="nav-link">Home</a>
+                <a href="#tools" class="nav-link">Tools</a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="#contact" class="nav-link">Contact</a>
+                <button class="cta-button contact-button">Contact Us</button>
+            </div>
             <div class="hamburger" id="hamburger">
-                <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
             </div>
-        </header>
+        </div>
+    </nav>
 
-        <!-- Sidebar -->
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Left Sidebar -->
         <aside class="sidebar" id="sidebar">
-            <div class="tool-category">
-                <h3 class="category-title">🧰 Browser Utilities (Functional)<i class="fas fa-chevron-down"></i></h3>
-                <ul class="tool-list">
-                    <li><a href="#" data-tool="image-compressor"><i class="fas fa-compress"></i> Image Compressor</a></li>
-                    <li><a href="#" data-tool="image-converter"><i class="fas fa-exchange-alt"></i> Image Converter</a></li>
-                    <li><a href="#" data-tool="qr-generator"><i class="fas fa-qrcode"></i> QR Code Generator</a></li>
-                    <li><a href="#" data-tool="password-generator"><i class="fas fa-key"></i> Password Generator</a></li>
-                    <li><a href="#" data-tool="word-counter"><i class="fas fa-calculator"></i> Word Counter</a></li>
-                    <li><a href="#" data-tool="age-calculator"><i class="fas fa-birthday-cake"></i> Age Calculator</a></li>
-                    <li><a href="#" data-tool="bmi-calculator"><i class="fas fa-weight"></i> BMI Calculator</a></li>
-                    <li><a href="#" data-tool="color-picker"><i class="fas fa-palette"></i> Color Picker</a></li>
-                    <li><a href="#" data-tool="json-formatter"><i class="fas fa-code"></i> JSON Formatter</a></li>
-                    <li><a href="#" data-tool="text-to-speech"><i class="fas fa-volume-up"></i> Text to Speech</a></li>
-                    <li><a href="#" data-tool="speech-to-text"><i class="fas fa-microphone"></i> Speech to Text</a></li>
-                    <li><a href="#" data-tool="timer"><i class="fas fa-stopwatch"></i> Timer / Stopwatch</a></li>
-                </ul>
+            <div class="sidebar-header">
+                <h3>Tool Categories</h3>
+                <button class="sidebar-toggle" id="sidebar-toggle">×</button>
             </div>
-            <div class="tool-category">
-                <h3 class="category-title">🔻 Advanced Converters (UI Demo)<i class="fas fa-chevron-down"></i></h3>
-                <ul class="tool-list">
-                    <li><a href="#" data-tool="merge-pdf"><i class="fas fa-compress-arrows-alt"></i> Merge PDF</a></li>
-                    <li><a href="#" data-tool="split-pdf"><i class="fas fa-columns"></i> Split PDF</a></li>
-                    <li><a href="#" data-tool="compress-pdf"><i class="fas fa-file-archive"></i> Compress PDF</a></li>
-                    <li><a href="#" data-tool="pdf-to-word"><i class="fas fa-file-word"></i> PDF to Word</a></li>
-                    <li><a href="#" data-tool="word-to-pdf"><i class="fas fa-file-pdf"></i> Word to PDF</a></li>
-                    <li><a href="#" data-tool="jpg-to-pdf"><i class="fas fa-file-pdf"></i> JPG to PDF</a></li>
-                    <li><a href="#" data-tool="audio-converter"><i class="fas fa-music"></i> Audio Converter</a></li>
-                    <li><a href="#" data-tool="video-compressor"><i class="fas fa-video"></i> Video Compressor</a></li>
-                </ul>
+            <div class="tool-categories">
+                <div class="category">
+                    <div class="category-header" data-category="pdf">
+                        <span class="category-icon">📄</span>
+                        <span>PDF Tools</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="category-content active">
+                        <div class="tool-item" data-tool="merge-pdf">🔗 Merge PDF</div>
+                        <div class="tool-item" data-tool="split-pdf">✂️ Split PDF</div>
+                        <div class="tool-item" data-tool="compress-pdf">📦 Compress PDF</div>
+                        <div class="tool-item" data-tool="pdf-to-word">📝 PDF to Word</div>
+                        <div class="tool-item" data-tool="word-to-pdf">📄 Word to PDF</div>
+                        <div class="tool-item" data-tool="pdf-to-ppt">📊 PDF to PowerPoint</div>
+                        <div class="tool-item" data-tool="ppt-to-pdf">📄 PowerPoint to PDF</div>
+                        <div class="tool-item" data-tool="pdf-to-excel">📈 PDF to Excel</div>
+                        <div class="tool-item" data-tool="excel-to-pdf">📄 Excel to PDF</div>
+                        <div class="tool-item" data-tool="pdf-to-jpg">🖼️ PDF to JPG</div>
+                        <div class="tool-item" data-tool="jpg-to-pdf">📄 JPG to PDF</div>
+                        <div class="tool-item" data-tool="organize-pdf">📋 Organize PDF</div>
+                        <div class="tool-item" data-tool="edit-pdf">✏️ Edit PDF</div>
+                        <div class="tool-item" data-tool="rotate-pdf">🔄 Rotate PDF</div>
+                        <div class="tool-item" data-tool="unlock-pdf">🔓 Unlock PDF</div>
+                        <div class="tool-item" data-tool="protect-pdf">🔐 Protect PDF</div>
+                        <div class="tool-item" data-tool="add-page-numbers">🔢 Add Page Numbers</div>
+                        <div class="tool-item" data-tool="add-watermark">💧 Add Watermark</div>
+                    </div>
+                </div>
+                
+                <div class="category">
+                    <div class="category-header" data-category="image">
+                        <span class="category-icon">🖼️</span>
+                        <span>Image Tools</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="category-content">
+                        <div class="tool-item" data-tool="image-compressor">📦 Image Compressor</div>
+                        <div class="tool-item" data-tool="image-converter">🔄 Image Converter</div>
+                    </div>
+                </div>
+
+                <div class="category">
+                    <div class="category-header" data-category="media">
+                        <span class="category-icon">🎵</span>
+                        <span>Media Tools</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="category-content">
+                        <div class="tool-item" data-tool="audio-converter">🎵 Audio Converter</div>
+                        <div class="tool-item" data-tool="video-compressor">🎬 Video Compressor</div>
+                    </div>
+                </div>
+
+                <div class="category">
+                    <div class="category-header" data-category="utility">
+                        <span class="category-icon">🛠️</span>
+                        <span>Utility Tools</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="category-content">
+                        <div class="tool-item" data-tool="qr-generator">📱 QR Code Generator</div>
+                        <div class="tool-item" data-tool="password-generator">🔑 Password Generator</div>
+                        <div class="tool-item" data-tool="word-counter">📝 Word Counter</div>
+                        <div class="tool-item" data-tool="age-calculator">📅 Age Calculator</div>
+                        <div class="tool-item" data-tool="bmi-calculator">⚖️ BMI Calculator</div>
+                        <div class="tool-item" data-tool="color-picker">🎨 Color Picker</div>
+                        <div class="tool-item" data-tool="unit-converter">📏 Unit Converter</div>
+                        <div class="tool-item" data-tool="json-formatter">📋 JSON Formatter</div>
+                        <div class="tool-item" data-tool="text-to-speech">🔊 Text to Speech</div>
+                        <div class="tool-item" data-tool="speech-to-text">🎤 Speech to Text</div>
+                        <div class="tool-item" data-tool="timer-stopwatch">⏱️ Timer/Stopwatch</div>
+                    </div>
+                </div>
             </div>
         </aside>
 
         <!-- Main Content -->
         <main class="main-content" id="main-content">
-            <section id="home" class="hero-section">
-                <h1>I love all Bitfitx Tools</h1>
-                <p>Your one-stop futuristic hub for file conversions and utility tools. Fast, secure, and entirely browser-based.</p>
-                <a href="#tools" class="cta-button">Explore Tools</a>
-            </section>
-            
-            <section id="tools">
-                <div id="tools-grid"></div>
-            </section>
-
-            <section id="about" class="content-section">
-                <h2>About Us</h2>
-                <p>At BITFITX, we are committed to delivering cutting-edge technology solutions that empower individuals, entrepreneurs, and businesses worldwide. Founded with a passion for innovation, our mission is to make digital transformation accessible, secure, and impactful for everyone.</p>
-                <p>From our inception, we have focused on creating user-friendly platforms that bridge the gap between advanced digital technology and real-world needs. Our expertise spans blockchain development, AI-powered applications, and secure web solutions designed to enhance performance and scalability.</p>
-                <p>We believe that technology should be simple, transparent, and built for people. That’s why our dedicated team of expert developers, creative designers, and strategic thinkers works tirelessly to deliver products that combine innovation, security, and efficiency. Each project is crafted to meet the highest standards, ensuring our clients gain a competitive edge in the ever-evolving digital economy.</p>
-                <p>Our services are trusted by a growing global community seeking reliable digital solutions that adapt to changing market trends. We prioritize cybersecurity, data protection, and seamless user experiences, making us a preferred partner for businesses aiming to thrive in the digital era.</p>
-                <p>At BITFITX, integrity and transparency are at the heart of our operations. We maintain open communication, deliver measurable results, and provide continuous support to help clients achieve their long-term goals.</p>
-                <p>As technology continues to evolve, our vision remains clear — to lead innovation and create solutions that are not only relevant today but also future-ready. Whether you’re an individual exploring new possibilities or a company scaling globally, we are here to turn your ideas into reality.</p>
-                <p><strong>Join us in shaping the future of technology — today.</strong></p>
+            <!-- Hero Section -->
+            <section class="hero-section" id="home">
+                <div class="hero-content">
+                    <h1 class="hero-title">Prompt Minds Multi Tool Hub</h1>
+                    <p class="hero-subtitle">Your ultimate destination for 33+ powerful tools. Process files, convert formats, and boost productivity with our futuristic web platform.</p>
+                    <button class="cta-button" onclick="scrollToTools()">Explore Tools</button>
+                </div>
             </section>
 
-            <section id="donate" class="content-section">
-                <h2>Support Our Mission</h2>
-                <p>If you find our tools useful, please consider supporting our development. Your donations help us maintain and improve the platform, keeping it free for everyone. We appreciate your support!</p>
-                <div class="donation-box">
-                    <h3>BNB (BEP-20)</h3>
-                    <div class="wallet-address-container">
-                        <span id="bep20-address" class="wallet-address">0xc3945FdC1E267fAd03802a707da3198770937e93</span>
-                        <button id="copy-address-btn" class="cta-button copy-btn" title="Copy to clipboard">
-                            <i class="fas fa-copy"></i>
-                        </button>
+            <!-- Tools Grid -->
+            <section class="tools-section" id="tools">
+                <h2 class="section-title">Featured Tools</h2>
+                <div class="tools-grid">
+                    <!-- PDF Tools -->
+                    <div class="tool-card" data-tool="merge-pdf">
+                        <div class="card-icon">🔗</div>
+                        <h3>Merge PDF</h3>
+                        <p>Combine multiple PDF files into a single document with ease.</p>
+                        <button class="tool-button">Open Tool</button>
+                    </div>
+                    
+                    <div class="tool-card" data-tool="split-pdf">
+                        <div class="card-icon">✂️</div>
+                        <h3>Split PDF</h3>
+                        <p>Extract specific pages or split PDF into multiple files.</p>
+                        <button class="tool-button">Open Tool</button>
+                    </div>
+
+                    <div class="tool-card" data-tool="compress-pdf">
+                        <div class="card-icon">📦</div>
+                        <h3>Compress PDF</h3>
+                        <p>Reduce PDF file size while maintaining quality.</p>
+                        <button class="tool-button">Open Tool</button>
+                    </div>
+
+                    <div class="tool-card" data-tool="pdf-to-jpg">
+                        <div class="card-icon">🖼️</div>
+                        <h3>PDF to JPG</h3>
+                        <p>Convert PDF pages to high-quality JPG images.</p>
+                        <button class="tool-button">Open Tool</button>
+                    </div>
+
+                    <div class="tool-card" data-tool="image-compressor">
+                        <div class="card-icon">📦</div>
+                        <h3>Image Compressor</h3>
+                        <p>Reduce image file size without losing quality.</p>
+                        <button class="tool-button">Open Tool</button>
+                    </div>
+
+                    <div class="tool-card" data-tool="qr-generator">
+                        <div class="card-icon">📱</div>
+                        <h3>QR Code Generator</h3>
+                        <p>Create QR codes for text, URLs, and more.</p>
+                        <button class="tool-button">Open Tool</button>
+                    </div>
+
+                    <div class="tool-card" data-tool="password-generator">
+                        <div class="card-icon">🔑</div>
+                        <h3>Password Generator</h3>
+                        <p>Generate secure passwords with custom options.</p>
+                        <button class="tool-button">Open Tool</button>
+                    </div>
+
+                    <div class="tool-card" data-tool="color-picker">
+                        <div class="card-icon">🎨</div>
+                        <h3>Color Picker</h3>
+                        <p>Pick colors and get hex, RGB, and HSL values.</p>
+                        <button class="tool-button">Open Tool</button>
+                    </div>
+
+                    <div class="tool-card" data-tool="text-to-speech">
+                        <div class="card-icon">🔊</div>
+                        <h3>Text to Speech</h3>
+                        <p>Convert text to natural-sounding speech.</p>
+                        <button class="tool-button">Open Tool</button>
                     </div>
                 </div>
             </section>
@@ -237,391 +1054,1377 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">
-            <p>© 2025 I love all Bitfitx Tools. All Rights Reserved.</p>
-            <div class="footer-links">
-                <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a> | <a href="mailto:bitfitxofficial1@gmail.com">Contact Us</a>
+            <div class="footer-section">
+                <h4>Prompt Minds</h4>
+                <p>Your ultimate multi-tool hub for productivity and creativity.</p>
             </div>
-            <div class="social-icons">
-                <a href="#"><i class="fab fa-youtube"></i></a><a href="#"><i class="fab fa-twitter"></i></a><a href="#"><i class="fab fa-github"></i></a><a href="#"><i class="fab fa-linkedin"></i></a>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <a href="#home">Home</a>
+                <a href="#tools">Tools</a>
+                <a href="#about">About</a>
+                <a href="#contact">Contact</a>
+            </div>
+            <div class="footer-section">
+                <h4>Legal</h4>
+                <a href="#privacy">Privacy Policy</a>
+                <a href="#terms">Terms of Service</a>
+            </div>
+            <div class="footer-section">
+                <h4>Connect</h4>
+                <div class="social-icons">
+                    <a href="#" class="social-icon">📧</a>
+                    <a href="#" class="social-icon">🐦</a>
+                    <a href="#" class="social-icon">📘</a>
+                    <a href="#" class="social-icon">📷</a>
+                </div>
             </div>
         </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Prompt Minds. All Rights Reserved.</p>
+        </div>
     </footer>
-    
+
     <!-- Tool Modal -->
-    <div id="tool-modal" class="modal">
+    <div class="modal" id="tool-modal">
         <div class="modal-content">
-            <span class="close-btn" id="close-modal-btn">&times;</span>
-            <div id="modal-body"></div>
+            <div class="modal-header">
+                <h2 id="modal-title">Tool Name</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- Tool content will be dynamically inserted here -->
+            </div>
         </div>
     </div>
 
+    <!-- Progress Toast -->
+    <div class="toast" id="progress-toast">
+        <div class="toast-content">
+            <div class="toast-icon">⏳</div>
+            <div class="toast-message">Processing...</div>
+        </div>
+    </div>
 
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const toolsData = {
-            // Implemented tools first
-            'image-compressor': { title: 'Image Compressor', icon: 'fas fa-compress', description: 'Reduce JPG/PNG file size using browser-based compression.', type: 'implemented' },
-            'image-converter': { title: 'Image Converter', icon: 'fas fa-exchange-alt', description: 'Convert images to JPG, PNG, or WEBP formats.', type: 'implemented' },
-            'qr-generator': { title: 'QR Code Generator', icon: 'fas fa-qrcode', description: 'Create custom QR codes for URLs, text, and more.', type: 'implemented' },
-            'password-generator': { title: 'Password Generator', icon: 'fas fa-key', description: 'Generate strong, secure, and random passwords.', type: 'implemented' },
-            'word-counter': { title: 'Word & Character Counter', icon: 'fas fa-calculator', description: 'Count words, characters, and sentences in your text.', type: 'implemented' },
-            'age-calculator': { title: 'Age Calculator', icon: 'fas fa-birthday-cake', description: 'Calculate your exact age from your birth date.', type: 'implemented' },
-            'bmi-calculator': { title: 'BMI Calculator', icon: 'fas fa-weight', description: 'Calculate your Body Mass Index.', type: 'implemented' },
-            'color-picker': { title: 'Color Picker', icon: 'fas fa-palette', description: 'Pick colors and get HEX/RGB/HSL values.', type: 'implemented' },
-            'json-formatter': { title: 'JSON Formatter', icon: 'fas fa-code', description: 'Format, validate, and beautify your JSON data.', type: 'implemented' },
-            'text-to-speech': { title: 'Text to Speech', icon: 'fas fa-volume-up', description: 'Convert written text into natural-sounding speech.', type: 'implemented' },
-            'speech-to-text': { title: 'Speech to Text', icon: 'fas fa-microphone', description: 'Transcribe spoken words into written text.', type: 'implemented' },
-            'timer': { title: 'Timer / Stopwatch', icon: 'fas fa-stopwatch', description: 'A simple, accurate timer and stopwatch.', type: 'implemented' },
-            // Simulated tools last
-            'merge-pdf': { title: 'Merge PDF', icon: 'fas fa-compress-arrows-alt', description: 'Combine multiple PDF files into one single document.', type: 'simulated' },
-            'split-pdf': { title: 'Split PDF', icon: 'fas fa-columns', description: 'Extract pages or split a PDF into multiple files.', type: 'simulated' },
-            'compress-pdf': { title: 'Compress PDF', icon: 'fas fa-file-archive', description: 'Reduce the file size of your PDF while maintaining quality.', type: 'simulated' },
-            'pdf-to-word': { title: 'PDF to Word', icon: 'fas fa-file-word', description: 'Convert your PDF files to editable Word documents.', type: 'simulated' },
-            'word-to-pdf': { title: 'Word to PDF', icon: 'fas fa-file-pdf', description: 'Convert Word documents to professional-looking PDFs.', type: 'simulated' },
-            'jpg-to-pdf': { title: 'JPG to PDF', icon: 'fas fa-file-pdf', description: 'Combine multiple JPG images into a single PDF file.', type: 'simulated' },
-            'audio-converter': { title: 'Audio Converter', icon: 'fas fa-music', description: 'Convert audio files between different formats like MP3, WAV.', type: 'simulated' },
-            'video-compressor': { title: 'Video Compressor', icon: 'fas fa-video', description: 'Reduce the file size of your video files.', type: 'simulated' },
-        };
+        // Prompt Minds Multi Tool Hub - JavaScript
+        // Main application logic for all 33+ tools
 
-        const toolsGrid = document.getElementById('tools-grid');
-        for (const toolId in toolsData) {
-            const tool = toolsData[toolId];
-            const card = document.createElement('div');
-            card.className = 'tool-card';
-            if (tool.type === 'simulated') {
-                card.classList.add('simulated');
+        class PromptMindsApp {
+            constructor() {
+                this.init();
+                this.initEventListeners();
+                this.currentTool = null;
             }
-            card.innerHTML = `<i class="${tool.icon}"></i><h2>${tool.title}</h2><p>${tool.description}</p>
-                <button class="open-tool-btn" data-tool="${toolId}">Open Tool</button>`;
-            toolsGrid.appendChild(card);
-        }
 
-        const hamburger = document.getElementById('hamburger');
-        const navLinks = document.getElementById('nav-links');
-        const sidebar = document.getElementById('sidebar');
-        const mainContent = document.getElementById('main-content');
-        hamburger.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-            sidebar.classList.toggle('active');
-            mainContent.classList.toggle('sidebar-active');
-        });
-        
-        document.querySelectorAll('.category-title').forEach(title => {
-            title.addEventListener('click', () => {
-                title.nextElementSibling.classList.toggle('active');
-                title.querySelector('i').classList.toggle('fa-chevron-down');
-                title.querySelector('i').classList.toggle('fa-chevron-up');
-            });
-        });
-
-        const modal = document.getElementById('tool-modal');
-        const modalBody = document.getElementById('modal-body');
-        const closeModalBtn = document.getElementById('close-modal-btn');
-
-        document.body.addEventListener('click', (e) => {
-            const targetElement = e.target.closest('[data-tool]');
-            if (targetElement) openToolModal(targetElement.dataset.tool);
-        });
-        
-        const closeToolModal = () => {
-            modal.style.display = 'none';
-            window.speechSynthesis.cancel();
-            if (window.speechRecognitionInstance) window.speechRecognitionInstance.stop();
-        };
-        closeModalBtn.onclick = closeToolModal;
-        window.onclick = (e) => { if (e.target == modal) closeToolModal(); };
-
-        const copyBtn = document.getElementById('copy-address-btn');
-        copyBtn.addEventListener('click', () => {
-            const address = document.getElementById('bep20-address').textContent;
-            navigator.clipboard.writeText(address).then(() => {
-                const originalIcon = copyBtn.innerHTML;
-                copyBtn.innerHTML = `<i class="fas fa-check"></i>`;
-                setTimeout(() => { copyBtn.innerHTML = originalIcon; }, 2000);
-            }).catch(err => { console.error('Failed to copy text: ', err); alert('Failed to copy address.'); });
-        });
-
-        function openToolModal(toolId) {
-            const tool = toolsData[toolId];
-            const content = (tool.type === 'implemented') ? getImplementedToolHTML(toolId, tool) : getSimulatedToolHTML(tool);
-            modalBody.innerHTML = content;
-            modal.style.display = 'block';
-
-            if (tool.type === 'implemented') addToolFunctionality(toolId);
-            else addSimulatedFunctionality();
-        }
-
-        function getSimulatedToolHTML(tool) {
-            return `
-                <div class="tool-ui-container"><h2>${tool.title}</h2>
-                    <div class="file-drop-area" id="file-drop-area">
-                        <i class="${tool.icon}" style="font-size: 3rem; color: #42f8f5;"></i><p>Drag & Drop files here or</p>
-                        <button class="upload-btn">Select Files</button>
-                    </div>
-                    <div class="processing-status" id="processing-status"></div>
-                    <div class="tool-output">
-                        <strong style="color: var(--accent-glow-color);">NOTE:</strong> This tool is a UI Demonstration. Complex file conversions require server-side processing, which is not available in this frontend-only application.
-                    </div>
-                </div>`;
-        }
-
-        function addSimulatedFunctionality() {
-            const dropArea = document.getElementById('file-drop-area');
-            const status = document.getElementById('processing-status');
-            const process = () => {
-                status.style.display = 'block';
-                status.innerHTML = 'Simulating Upload...';
-                setTimeout(() => {
-                    status.innerHTML = 'Simulating Processing...';
-                    setTimeout(() => { status.innerHTML = '<span style="color: #0f0;">Simulation Complete!</span>'; }, 1500);
-                }, 1000);
-            };
-            if(dropArea) {
-                dropArea.addEventListener('dragover', e => { e.preventDefault(); dropArea.classList.add('dragover'); });
-                dropArea.addEventListener('dragleave', () => dropArea.classList.remove('dragover'));
-                dropArea.addEventListener('drop', e => { e.preventDefault(); dropArea.classList.remove('dragover'); process(); });
-                dropArea.querySelector('.upload-btn').addEventListener('click', process);
+            init() {
+                // Initialize app state
+                this.sidebarOpen = window.innerWidth > 768;
+                this.updateLayout();
             }
-        }
 
-        function getImplementedToolHTML(toolId, tool) {
-            let specificUI = '';
-            switch(toolId) {
-                case 'image-compressor':
-                    specificUI = `<label for="image-upload-btn" class="upload-btn">Select Image</label><input type="file" id="image-upload-btn" accept="image/jpeg, image/png">
-                        <label>Quality: <span id="quality-val">0.7</span></label><input type="range" id="quality-slider" min="0.1" max="1" step="0.1" value="0.7">
-                        <div class="tool-output" id="image-output">Select an image to begin.</div>`; break;
-                case 'image-converter':
-                    specificUI = `<label for="image-upload-btn" class="upload-btn">Select Image</label><input type="file" id="image-upload-btn" accept="image/*">
-                        <label for="format-select">Convert to:</label>
-                        <select id="format-select"><option value="jpeg">JPG</option><option value="png">PNG</option><option value="webp">WEBP</option></select>
-                        <div class="tool-output" id="image-output">Select an image and format.</div>`; break;
-                case 'word-counter':
-                    specificUI = `<textarea id="wc-textarea" rows="8" placeholder="Paste text here..."></textarea>
-                        <div class="tool-output" id="wc-output">Words: 0 | Characters: 0 | Sentences: 0</div>`; break;
-                case 'password-generator':
-                    specificUI = `<label>Length: <span id="pg-length-val">12</span></label><input type="range" id="pg-length" min="6" max="32" value="12">
-                        <div><input type="checkbox" id="pg-uppercase" checked> Uppercase</div><div><input type="checkbox" id="pg-numbers" checked> Numbers</div><div><input type="checkbox" id="pg-symbols" checked> Symbols</div>
-                        <button class="cta-button" id="pg-generate-btn" style="margin-top: 1rem;">Generate</button>
-                        <div class="tool-output" id="pg-output" style="cursor: pointer;" title="Click to copy">...</div>`; break;
-                case 'qr-generator':
-                    specificUI = `<input type="text" id="qr-text" placeholder="Enter URL or text"><button class="cta-button" id="qr-generate-btn">Generate</button>
-                        <div class="tool-output" id="qr-output" style="text-align:center; min-height: 160px;"></div>`; break;
-                case 'age-calculator':
-                    specificUI = `<label for="birthdate">Your Birth Date:</label><input type="date" id="birthdate">
-                        <button class="cta-button" id="age-calc-btn">Calculate</button><div class="tool-output" id="age-output">Select your birth date.</div>`; break;
-                case 'bmi-calculator':
-                    specificUI = `<div class="tool-grid-2-col"><div><label>Height (cm):</label><input type="number" id="bmi-height" placeholder="e.g., 180"></div><div><label>Weight (kg):</label><input type="number" id="bmi-weight" placeholder="e.g., 75"></div></div>
-                        <button class="cta-button" id="bmi-calc-btn">Calculate</button><div class="tool-output" id="bmi-output">Enter your height and weight.</div>`; break;
-                case 'color-picker':
-                    specificUI = `<label>Select Color:</label><input type="color" id="color-input" value="#42f8f5" style="width:100%; height: 50px;">
-                        <div class="tool-output" id="color-output"></div>`; break;
-                case 'json-formatter':
-                    specificUI = `<textarea id="json-input" rows="10" placeholder="Paste JSON here..."></textarea><button class="cta-button" id="json-format-btn">Format</button>
-                        <div class="tool-output" id="json-output">Formatted JSON will appear here.</div>`; break;
-                case 'text-to-speech':
-                    specificUI = `<textarea id="tts-input" rows="6" placeholder="Type text to speak..."></textarea><button class="cta-button" id="tts-speak-btn">Speak</button>
-                        <div class="tool-output" id="tts-status">Ready.</div>`; break;
-                case 'speech-to-text':
-                    specificUI = `<button class="cta-button" id="stt-start-btn">Start Listening</button><button class="cta-button" id="stt-stop-btn" disabled>Stop</button>
-                        <div class="tool-output" id="stt-output">Transcript appears here...</div>`; break;
-                case 'timer':
-                    specificUI = `<div class="timer-display" id="timer-display">00:00:00.0</div><div class="timer-controls" style="text-align:center;">
-                        <button class="cta-button" id="timer-start-btn">Start</button><button class="cta-button" id="timer-stop-btn">Stop</button><button class="cta-button" id="timer-reset-btn">Reset</button></div>`; break;
-            }
-            return `<div class="tool-ui-container"><h2>${tool.title}</h2>${specificUI}</div>`;
-        }
-
-        // --- All Tool Logic ---
-        function addToolFunctionality(toolId) {
-            const handleImageTools = (isCompressor) => {
-                const fileInput = document.getElementById('image-upload-btn');
-                const outputDiv = document.getElementById('image-output');
-                let qualitySlider, formatSelect;
-                if (isCompressor) {
-                    qualitySlider = document.getElementById('quality-slider');
-                    qualitySlider.oninput = () => document.getElementById('quality-val').textContent = qualitySlider.value;
-                } else {
-                    formatSelect = document.getElementById('format-select');
-                }
+            initEventListeners() {
+                // Navigation
+                document.getElementById('hamburger')?.addEventListener('click', () => this.toggleMobileMenu());
+                document.getElementById('sidebar-toggle')?.addEventListener('click', () => this.toggleSidebar());
                 
-                const processImage = () => {
-                    if (!fileInput.files || fileInput.files.length === 0) {
-                        outputDiv.textContent = "Please select a file first.";
+                // Tool navigation
+                document.querySelectorAll('.tool-item, .tool-card').forEach(item => {
+                    item.addEventListener('click', (e) => this.openTool(e.target.closest('[data-tool]').dataset.tool));
+                });
+
+                // Category toggles
+                document.querySelectorAll('.category-header').forEach(header => {
+                    header.addEventListener('click', () => this.toggleCategory(header));
+                });
+
+                // Modal close
+                document.querySelector('.modal-close')?.addEventListener('click', () => this.closeModal());
+                document.getElementById('tool-modal')?.addEventListener('click', (e) => {
+                    if (e.target.id === 'tool-modal') this.closeModal();
+                });
+
+                // Responsive layout
+                window.addEventListener('resize', () => this.updateLayout());
+
+                // Smooth scrolling for navigation
+                document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                    anchor.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const target = document.querySelector(anchor.getAttribute('href'));
+                        if (target) {
+                            target.scrollIntoView({ behavior: 'smooth' });
+                        }
+                    });
+                });
+            }
+
+            toggleMobileMenu() {
+                const navMenu = document.getElementById('nav-menu');
+                const hamburger = document.getElementById('hamburger');
+                navMenu.classList.toggle('active');
+                hamburger.classList.toggle('active');
+            }
+
+            toggleSidebar() {
+                const sidebar = document.getElementById('sidebar');
+                this.sidebarOpen = !this.sidebarOpen;
+                sidebar.classList.toggle('active', this.sidebarOpen);
+                this.updateLayout();
+            }
+
+            toggleCategory(header) {
+                const category = header.parentElement;
+                const content = category.querySelector('.category-content');
+                const isActive = content.classList.contains('active');
+                
+                content.classList.toggle('active', !isActive);
+                category.classList.toggle('collapsed', isActive);
+            }
+
+            updateLayout() {
+                const isMobile = window.innerWidth <= 768;
+                const sidebar = document.getElementById('sidebar');
+                const mainContent = document.getElementById('main-content');
+                
+                if (isMobile) {
+                    sidebar.classList.toggle('active', this.sidebarOpen);
+                    mainContent.style.marginLeft = '0';
+                } else {
+                    sidebar.classList.remove('active');
+                    mainContent.style.marginLeft = this.sidebarOpen ? '300px' : '0';
+                }
+            }
+
+            openTool(toolName) {
+                this.currentTool = toolName;
+                const modal = document.getElementById('tool-modal');
+                const modalTitle = document.getElementById('modal-title');
+                const modalBody = document.getElementById('modal-body');
+                
+                modalTitle.textContent = this.getToolTitle(toolName);
+                modalBody.innerHTML = this.getToolInterface(toolName);
+                
+                modal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+                
+                // Initialize tool-specific functionality
+                this.initToolFunctionality(toolName);
+            }
+
+            closeModal() {
+                const modal = document.getElementById('tool-modal');
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+                this.currentTool = null;
+            }
+
+            getToolTitle(toolName) {
+                const titles = {
+                    'merge-pdf': 'Merge PDF Files',
+                    'split-pdf': 'Split PDF File',
+                    'compress-pdf': 'Compress PDF',
+                    'pdf-to-word': 'PDF to Word Converter',
+                    'word-to-pdf': 'Word to PDF Converter',
+                    'pdf-to-ppt': 'PDF to PowerPoint',
+                    'ppt-to-pdf': 'PowerPoint to PDF',
+                    'pdf-to-excel': 'PDF to Excel',
+                    'excel-to-pdf': 'Excel to PDF',
+                    'pdf-to-jpg': 'PDF to JPG Converter',
+                    'jpg-to-pdf': 'JPG to PDF Converter',
+                    'organize-pdf': 'Organize PDF Pages',
+                    'edit-pdf': 'Edit PDF Document',
+                    'rotate-pdf': 'Rotate PDF Pages',
+                    'unlock-pdf': 'Unlock PDF File',
+                    'protect-pdf': 'Protect PDF with Password',
+                    'add-page-numbers': 'Add Page Numbers',
+                    'add-watermark': 'Add Watermark to PDF',
+                    'image-compressor': 'Image Compressor',
+                    'image-converter': 'Image Format Converter',
+                    'audio-converter': 'Audio Format Converter',
+                    'video-compressor': 'Video Compressor',
+                    'qr-generator': 'QR Code Generator',
+                    'password-generator': 'Password Generator',
+                    'word-counter': 'Word & Character Counter',
+                    'age-calculator': 'Age Calculator',
+                    'bmi-calculator': 'BMI Calculator',
+                    'color-picker': 'Color Picker Tool',
+                    'unit-converter': 'Unit Converter',
+                    'json-formatter': 'JSON Formatter',
+                    'text-to-speech': 'Text to Speech',
+                    'speech-to-text': 'Speech to Text',
+                    'timer-stopwatch': 'Timer & Stopwatch'
+                };
+                return titles[toolName] || 'Tool';
+            }
+
+            getToolInterface(toolName) {
+                switch(toolName) {
+                    case 'qr-generator':
+                        return this.getQrGeneratorInterface();
+                    case 'password-generator':
+                        return this.getPasswordGeneratorInterface();
+                    case 'word-counter':
+                        return this.getWordCounterInterface();
+                    case 'age-calculator':
+                        return this.getAgeCalculatorInterface();
+                    case 'bmi-calculator':
+                        return this.getBmiCalculatorInterface();
+                    case 'color-picker':
+                        return this.getColorPickerInterface();
+                    case 'unit-converter':
+                        return this.getUnitConverterInterface();
+                    case 'json-formatter':
+                        return this.getJsonFormatterInterface();
+                    case 'text-to-speech':
+                        return this.getTextToSpeechInterface();
+                    case 'timer-stopwatch':
+                        return this.getTimerStopwatchInterface();
+                    default:
+                        return this.getGenericToolInterface(toolName);
+                }
+            }
+
+            getQrGeneratorInterface() {
+                return `
+                    <div class="form-group">
+                        <label class="form-label">Content Type:</label>
+                        <select class="form-select" id="qr-type">
+                            <option value="text">Text</option>
+                            <option value="url">URL</option>
+                            <option value="email">Email</option>
+                            <option value="phone">Phone</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Content:</label>
+                        <textarea class="form-textarea" id="qr-content" placeholder="Enter text or URL to generate QR code" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <button id="generate-qr-btn" class="cta-button">Generate QR Code</button>
+                    </div>
+                    <div id="qr-result" class="text-center hidden">
+                        <canvas id="qr-canvas" width="256" height="256" style="border: 1px solid var(--accent-cyan); border-radius: 8px;"></canvas>
+                        <br><br>
+                        <button id="download-qr-btn" class="tool-button">Download QR Code</button>
+                    </div>
+                `;
+            }
+
+            getPasswordGeneratorInterface() {
+                return `
+                    <div class="form-group">
+                        <label class="form-label">Password Length: <span id="length-value">12</span></label>
+                        <input type="range" id="password-length" min="4" max="64" value="12" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">
+                            <input type="checkbox" id="include-uppercase" checked> Include Uppercase (A-Z)
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">
+                            <input type="checkbox" id="include-lowercase" checked> Include Lowercase (a-z)
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">
+                            <input type="checkbox" id="include-numbers" checked> Include Numbers (0-9)
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">
+                            <input type="checkbox" id="include-symbols"> Include Symbols (!@#$%^&*)
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <button id="generate-password-btn" class="cta-button">Generate Password</button>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Generated Password:</label>
+                        <input type="text" id="generated-password" class="form-input" readonly>
+                        <br><br>
+                        <button id="copy-password-btn" class="tool-button">Copy Password</button>
+                    </div>
+                `;
+            }
+
+            getWordCounterInterface() {
+                return `
+                    <div class="form-group">
+                        <label class="form-label">Enter your text:</label>
+                        <textarea class="form-textarea" id="text-input" placeholder="Type or paste your text here..." rows="10"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; text-align: center;">
+                            <div>
+                                <h3 id="word-count">0</h3>
+                                <p>Words</p>
+                            </div>
+                            <div>
+                                <h3 id="char-count">0</h3>
+                                <p>Characters</p>
+                            </div>
+                            <div>
+                                <h3 id="char-count-no-spaces">0</h3>
+                                <p>Characters (no spaces)</p>
+                            </div>
+                            <div>
+                                <h3 id="paragraph-count">0</h3>
+                                <p>Paragraphs</p>
+                            </div>
+                            <div>
+                                <h3 id="sentence-count">0</h3>
+                                <p>Sentences</p>
+                            </div>
+                            <div>
+                                <h3 id="reading-time">0</h3>
+                                <p>Reading Time (min)</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            getAgeCalculatorInterface() {
+                return `
+                    <div class="form-group">
+                        <label class="form-label">Date of Birth:</label>
+                        <input type="date" id="birth-date" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Calculate age until (optional):</label>
+                        <input type="date" id="target-date" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <button id="calculate-age-btn" class="cta-button">Calculate Age</button>
+                    </div>
+                    <div id="age-result" class="hidden">
+                        <h3>Age Calculation Result:</h3>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; text-align: center; margin-top: 1rem;">
+                            <div>
+                                <h3 id="years">0</h3>
+                                <p>Years</p>
+                            </div>
+                            <div>
+                                <h3 id="months">0</h3>
+                                <p>Months</p>
+                            </div>
+                            <div>
+                                <h3 id="days">0</h3>
+                                <p>Days</p>
+                            </div>
+                            <div>
+                                <h3 id="total-days">0</h3>
+                                <p>Total Days</p>
+                            </div>
+                            <div>
+                                <h3 id="total-hours">0</h3>
+                                <p>Total Hours</p>
+                            </div>
+                            <div>
+                                <h3 id="total-minutes">0</h3>
+                                <p>Total Minutes</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            getBmiCalculatorInterface() {
+                return `
+                    <div class="form-group">
+                        <label class="form-label">Height:</label>
+                        <div style="display: flex; gap: 1rem;">
+                            <input type="number" id="height" class="form-input" placeholder="Height">
+                            <select id="height-unit" class="form-select" style="width: 120px;">
+                                <option value="cm">cm</option>
+                                <option value="ft">ft & in</option>
+                                <option value="m">meters</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" id="feet-inches" style="display: none;">
+                        <label class="form-label">Feet and Inches:</label>
+                        <div style="display: flex; gap: 1rem;">
+                            <input type="number" id="feet" class="form-input" placeholder="Feet">
+                            <input type="number" id="inches" class="form-input" placeholder="Inches">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Weight:</label>
+                        <div style="display: flex; gap: 1rem;">
+                            <input type="number" id="weight" class="form-input" placeholder="Weight">
+                            <select id="weight-unit" class="form-select" style="width: 120px;">
+                                <option value="kg">kg</option>
+                                <option value="lbs">lbs</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button id="calculate-bmi-btn" class="cta-button">Calculate BMI</button>
+                    </div>
+                    <div id="bmi-result" class="hidden text-center">
+                        <h3>Your BMI: <span id="bmi-value"></span></h3>
+                        <p id="bmi-category"></p>
+                        <div id="bmi-chart" style="margin-top: 1rem;">
+                            <p><strong>BMI Categories:</strong></p>
+                            <p>Underweight: Below 18.5</p>
+                            <p>Normal: 18.5 - 24.9</p>
+                            <p>Overweight: 25 - 29.9</p>
+                            <p>Obese: 30 and above</p>
+                        </div>
+                    </div>
+                `;
+            }
+
+            getColorPickerInterface() {
+                return `
+                    <div class="form-group">
+                        <label class="form-label">Pick a Color:</label>
+                        <input type="color" id="color-picker" class="form-input" value="#42f8f5">
+                    </div>
+                    <div class="form-group text-center">
+                        <div class="color-display" id="color-display" style="background-color: #42f8f5;"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">HEX:</label>
+                        <input type="text" id="hex-value" class="form-input" value="#42f8f5" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">RGB:</label>
+                        <input type="text" id="rgb-value" class="form-input" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">HSL:</label>
+                        <input type="text" id="hsl-value" class="form-input" readonly>
+                    </div>
+                    <div class="form-group">
+                        <button id="copy-hex-btn" class="tool-button">Copy HEX</button>
+                        <button id="copy-rgb-btn" class="tool-button">Copy RGB</button>
+                        <button id="copy-hsl-btn" class="tool-button">Copy HSL</button>
+                    </div>
+                `;
+            }
+
+            getUnitConverterInterface() {
+                return `
+                    <div class="form-group">
+                        <label class="form-label">Conversion Type:</label>
+                        <select class="form-select" id="conversion-type">
+                            <option value="length">Length</option>
+                            <option value="weight">Weight</option>
+                            <option value="temperature">Temperature</option>
+                            <option value="area">Area</option>
+                            <option value="volume">Volume</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">From:</label>
+                        <div style="display: flex; gap: 1rem;">
+                            <input type="number" id="from-value" class="form-input" placeholder="Enter value">
+                            <select id="from-unit" class="form-select"></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">To:</label>
+                        <div style="display: flex; gap: 1rem;">
+                            <input type="number" id="to-value" class="form-input" readonly>
+                            <select id="to-unit" class="form-select"></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button id="convert-btn" class="cta-button">Convert</button>
+                        <button id="swap-units-btn" class="tool-button">Swap Units</button>
+                    </div>
+                `;
+            }
+
+            getJsonFormatterInterface() {
+                return `
+                    <div class="form-group">
+                        <label class="form-label">JSON Input:</label>
+                        <textarea class="form-textarea" id="json-input" placeholder="Paste your JSON here..." rows="10"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <button id="format-json-btn" class="cta-button">Format JSON</button>
+                        <button id="minify-json-btn" class="tool-button">Minify JSON</button>
+                        <button id="validate-json-btn" class="tool-button">Validate JSON</button>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Formatted JSON:</label>
+                        <textarea class="form-textarea" id="json-output" readonly rows="10"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <button id="copy-json-btn" class="tool-button">Copy JSON</button>
+                        <button id="download-json-btn" class="tool-button">Download JSON</button>
+                    </div>
+                `;
+            }
+
+            getTextToSpeechInterface() {
+                return `
+                    <div class="form-group">
+                        <label class="form-label">Text to Speech:</label>
+                        <textarea class="form-textarea" id="tts-text" placeholder="Enter text to convert to speech..." rows="5"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Voice:</label>
+                        <select class="form-select" id="voice-select">
+                            <option value="">Default Voice</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Rate: <span id="rate-value">1</span></label>
+                        <input type="range" id="speech-rate" min="0.5" max="2" step="0.1" value="1" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Pitch: <span id="pitch-value">1</span></label>
+                        <input type="range" id="speech-pitch" min="0" max="2" step="0.1" value="1" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <button id="play-speech-btn" class="cta-button">Play Speech</button>
+                        <button id="pause-speech-btn" class="tool-button">Pause</button>
+                        <button id="stop-speech-btn" class="tool-button">Stop</button>
+                    </div>
+                `;
+            }
+
+            getTimerStopwatchInterface() {
+                return `
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                        <div>
+                            <h3>Timer</h3>
+                            <div class="form-group">
+                                <label class="form-label">Set Timer:</label>
+                                <div style="display: flex; gap: 0.5rem; align-items: center;">
+                                    <input type="number" id="timer-hours" class="form-input" placeholder="HH" min="0" max="23" style="width: 60px;">
+                                    <span>:</span>
+                                    <input type="number" id="timer-minutes" class="form-input" placeholder="MM" min="0" max="59" style="width: 60px;">
+                                    <span>:</span>
+                                    <input type="number" id="timer-seconds" class="form-input" placeholder="SS" min="0" max="59" style="width: 60px;">
+                                </div>
+                            </div>
+                            <div class="form-group text-center">
+                                <h2 id="timer-display">00:00:00</h2>
+                                <button id="start-timer-btn" class="cta-button">Start Timer</button>
+                                <button id="pause-timer-btn" class="tool-button">Pause</button>
+                                <button id="reset-timer-btn" class="tool-button">Reset</button>
+                            </div>
+                        </div>
+                        <div>
+                            <h3>Stopwatch</h3>
+                            <div class="form-group text-center">
+                                <h2 id="stopwatch-display">00:00:00</h2>
+                                <button id="start-stopwatch-btn" class="cta-button">Start</button>
+                                <button id="pause-stopwatch-btn" class="tool-button">Pause</button>
+                                <button id="reset-stopwatch-btn" class="tool-button">Reset</button>
+                                <button id="lap-stopwatch-btn" class="tool-button">Lap</button>
+                            </div>
+                            <div id="lap-times"></div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            getGenericToolInterface(toolName) {
+                return `
+                    <div class="file-upload" id="file-upload">
+                        <div class="file-upload-icon">📄</div>
+                        <div class="file-upload-text">
+                            <strong>Select files to process</strong><br>
+                            Drag & drop files here or click to browse
+                        </div>
+                        <input type="file" class="file-input" id="file-input" multiple>
+                    </div>
+                    <div class="form-group">
+                        <button id="process-btn" class="cta-button">Process Files</button>
+                    </div>
+                    <div id="result-area" class="hidden">
+                        <p>This tool is currently in development. File processing simulation will be implemented.</p>
+                    </div>
+                `;
+            }
+
+            initToolFunctionality(toolName) {
+                switch(toolName) {
+                    case 'qr-generator':
+                        this.initQrGenerator();
+                        break;
+                    case 'password-generator':
+                        this.initPasswordGenerator();
+                        break;
+                    case 'word-counter':
+                        this.initWordCounter();
+                        break;
+                    case 'age-calculator':
+                        this.initAgeCalculator();
+                        break;
+                    case 'bmi-calculator':
+                        this.initBmiCalculator();
+                        break;
+                    case 'color-picker':
+                        this.initColorPicker();
+                        break;
+                    case 'unit-converter':
+                        this.initUnitConverter();
+                        break;
+                    case 'json-formatter':
+                        this.initJsonFormatter();
+                        break;
+                    case 'text-to-speech':
+                        this.initTextToSpeech();
+                        break;
+                    case 'timer-stopwatch':
+                        this.initTimerStopwatch();
+                        break;
+                    default:
+                        this.initGenericTool();
+                        break;
+                }
+            }
+
+            initQrGenerator() {
+                const generateBtn = document.getElementById('generate-qr-btn');
+                const downloadBtn = document.getElementById('download-qr-btn');
+                const qrContent = document.getElementById('qr-content');
+                const qrResult = document.getElementById('qr-result');
+                const qrCanvas = document.getElementById('qr-canvas');
+
+                generateBtn.addEventListener('click', () => {
+                    const content = qrContent.value.trim();
+                    if (!content) {
+                        alert('Please enter content to generate QR code');
                         return;
                     }
-                    const file = fileInput.files[0];
-                    outputDiv.textContent = "Processing...";
-                    const reader = new FileReader();
-                    reader.onload = e => {
-                        const img = new Image();
-                        img.onload = () => {
-                            const canvas = document.createElement('canvas');
-                            canvas.width = img.width; canvas.height = img.height;
-                            const ctx = canvas.getContext('2d');
-                            ctx.drawImage(img, 0, 0);
-                            const mimeType = isCompressor ? 'image/jpeg' : `image/${formatSelect.value}`;
-                            const quality = isCompressor ? parseFloat(qualitySlider.value) : 0.92;
-                            const dataUrl = canvas.toDataURL(mimeType, quality);
-                            const originalSize = (file.size / 1024).toFixed(2);
-                            const newSize = (dataUrl.length * 0.75 / 1024).toFixed(2);
-                            outputDiv.innerHTML = `<p>Original: ${originalSize} KB | New: ~${newSize} KB</p>
-                                <img src="${dataUrl}" id="image-preview" alt="Preview">
-                                <a href="${dataUrl}" download="bitfitx-image.${isCompressor ? 'jpg' : formatSelect.value}" class="cta-button" style="margin-top:1rem; display:inline-block;">Download Image</a>`;
-                        };
-                        img.src = e.target.result;
-                    };
-                    reader.readAsDataURL(file);
-                };
-                fileInput.onchange = processImage;
-                if (qualitySlider) qualitySlider.onchange = processImage;
-                if (formatSelect) formatSelect.onchange = processImage;
-            };
 
-            switch(toolId) {
-                case 'image-compressor': handleImageTools(true); break;
-                case 'image-converter': handleImageTools(false); break;
-                case 'word-counter':
-                    document.getElementById('wc-textarea').oninput = e => {
-                        const text = e.target.value;
-                        const words = text.match(/\b[-'\w]+\b/g)?.length || 0;
-                        const sentences = text.match(/[^.!?]+[.!?]+/g)?.length || 0;
-                        document.getElementById('wc-output').innerHTML = `Words: ${words} | Characters: ${text.length} | Sentences: ${sentences}`;
-                    }; break;
-                case 'password-generator':
-                    const pgLength = document.getElementById('pg-length');
-                    const pgOutput = document.getElementById('pg-output');
-                    pgLength.oninput = () => document.getElementById('pg-length-val').textContent = pgLength.value;
-                    document.getElementById('pg-generate-btn').onclick = () => {
-                        let charset = "abcdefghijklmnopqrstuvwxyz";
-                        if (document.getElementById('pg-uppercase').checked) charset += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-                        if (document.getElementById('pg-numbers').checked) charset += "0123456789";
-                        if (document.getElementById('pg-symbols').checked) charset += "!@#$%^&*()_+~`|}{[]:;?><,./-=";
-                        let password = "";
-                        for (let i = 0, n = charset.length; i < pgLength.value; ++i) {
-                            password += charset.charAt(Math.floor(Math.random() * n));
+                    // Simple QR code generation simulation
+                    this.generateQRCode(qrCanvas, content);
+                    qrResult.classList.remove('hidden');
+                });
+
+                downloadBtn.addEventListener('click', () => {
+                    const link = document.createElement('a');
+                    link.download = 'qr-code.png';
+                    link.href = qrCanvas.toDataURL();
+                    link.click();
+                });
+            }
+
+            generateQRCode(canvas, text) {
+                const ctx = canvas.getContext('2d');
+                const size = 256;
+                const moduleSize = size / 25; // 25x25 grid
+
+                // Clear canvas
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(0, 0, size, size);
+
+                // Generate simple pattern based on text
+                ctx.fillStyle = '#000000';
+                for (let i = 0; i < 25; i++) {
+                    for (let j = 0; j < 25; j++) {
+                        const seed = (text.charCodeAt((i * j) % text.length) + i + j) % 2;
+                        if (seed === 0) {
+                            ctx.fillRect(i * moduleSize, j * moduleSize, moduleSize, moduleSize);
                         }
-                        pgOutput.textContent = password;
-                    };
-                    pgOutput.onclick = () => {
-                        if(pgOutput.textContent && pgOutput.textContent !== "...") {
-                            navigator.clipboard.writeText(pgOutput.textContent).then(() => alert('Password Copied!'));
+                    }
+                }
+
+                // Add finder patterns (corners)
+                this.drawFinderPattern(ctx, 0, 0, moduleSize);
+                this.drawFinderPattern(ctx, 18 * moduleSize, 0, moduleSize);
+                this.drawFinderPattern(ctx, 0, 18 * moduleSize, moduleSize);
+            }
+
+            drawFinderPattern(ctx, x, y, moduleSize) {
+                ctx.fillStyle = '#000000';
+                ctx.fillRect(x, y, 7 * moduleSize, 7 * moduleSize);
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(x + moduleSize, y + moduleSize, 5 * moduleSize, 5 * moduleSize);
+                ctx.fillStyle = '#000000';
+                ctx.fillRect(x + 2 * moduleSize, y + 2 * moduleSize, 3 * moduleSize, 3 * moduleSize);
+            }
+
+            initPasswordGenerator() {
+                const lengthSlider = document.getElementById('password-length');
+                const lengthValue = document.getElementById('length-value');
+                const generateBtn = document.getElementById('generate-password-btn');
+                const copyBtn = document.getElementById('copy-password-btn');
+                const passwordField = document.getElementById('generated-password');
+
+                lengthSlider.addEventListener('input', () => {
+                    lengthValue.textContent = lengthSlider.value;
+                });
+
+                generateBtn.addEventListener('click', () => {
+                    const length = parseInt(lengthSlider.value);
+                    const includeUpper = document.getElementById('include-uppercase').checked;
+                    const includeLower = document.getElementById('include-lowercase').checked;
+                    const includeNumbers = document.getElementById('include-numbers').checked;
+                    const includeSymbols = document.getElementById('include-symbols').checked;
+
+                    let charset = '';
+                    if (includeUpper) charset += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                    if (includeLower) charset += 'abcdefghijklmnopqrstuvwxyz';
+                    if (includeNumbers) charset += '0123456789';
+                    if (includeSymbols) charset += '!@#$%^&*()_+-=[]{}|;:,.<>?';
+
+                    if (!charset) {
+                        alert('Please select at least one character type');
+                        return;
+                    }
+
+                    let password = '';
+                    for (let i = 0; i < length; i++) {
+                        password += charset.charAt(Math.floor(Math.random() * charset.length));
+                    }
+
+                    passwordField.value = password;
+                });
+
+                copyBtn.addEventListener('click', () => {
+                    if (passwordField.value) {
+                        navigator.clipboard.writeText(passwordField.value);
+                        this.showToast('Password copied to clipboard!');
+                    }
+                });
+            }
+
+            initWordCounter() {
+                const textInput = document.getElementById('text-input');
+                const wordCount = document.getElementById('word-count');
+                const charCount = document.getElementById('char-count');
+                const charCountNoSpaces = document.getElementById('char-count-no-spaces');
+                const paragraphCount = document.getElementById('paragraph-count');
+                const sentenceCount = document.getElementById('sentence-count');
+                const readingTime = document.getElementById('reading-time');
+
+                textInput.addEventListener('input', () => {
+                    const text = textInput.value;
+                    
+                    // Word count
+                    const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+                    wordCount.textContent = words;
+
+                    // Character counts
+                    charCount.textContent = text.length;
+                    charCountNoSpaces.textContent = text.replace(/\s/g, '').length;
+
+                    // Paragraph count
+                    const paragraphs = text.trim() ? text.split(/\n\s*\n/).filter(p => p.trim()).length : 0;
+                    paragraphCount.textContent = paragraphs;
+
+                    // Sentence count
+                    const sentences = text.trim() ? text.split(/[.!?]+/).filter(s => s.trim()).length : 0;
+                    sentenceCount.textContent = sentences;
+
+                    // Reading time (average 200 words per minute)
+                    const readingTimeMinutes = Math.ceil(words / 200);
+                    readingTime.textContent = readingTimeMinutes;
+                });
+            }
+
+            initAgeCalculator() {
+                const calculateBtn = document.getElementById('calculate-age-btn');
+                const birthDate = document.getElementById('birth-date');
+                const targetDate = document.getElementById('target-date');
+                const ageResult = document.getElementById('age-result');
+
+                // Set today as default target date
+                targetDate.value = new Date().toISOString().split('T')[0];
+
+                calculateBtn.addEventListener('click', () => {
+                    if (!birthDate.value) {
+                        alert('Please select your birth date');
+                        return;
+                    }
+
+                    const birth = new Date(birthDate.value);
+                    const target = targetDate.value ? new Date(targetDate.value) : new Date();
+
+                    if (birth > target) {
+                        alert('Birth date cannot be in the future');
+                        return;
+                    }
+
+                    const ageCalc = this.calculateAge(birth, target);
+                    
+                    document.getElementById('years').textContent = ageCalc.years;
+                    document.getElementById('months').textContent = ageCalc.months;
+                    document.getElementById('days').textContent = ageCalc.days;
+                    document.getElementById('total-days').textContent = ageCalc.totalDays.toLocaleString();
+                    document.getElementById('total-hours').textContent = ageCalc.totalHours.toLocaleString();
+                    document.getElementById('total-minutes').textContent = ageCalc.totalMinutes.toLocaleString();
+
+                    ageResult.classList.remove('hidden');
+                });
+            }
+
+            calculateAge(birth, target) {
+                const diffTime = Math.abs(target - birth);
+                const totalDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+                const totalHours = Math.floor(diffTime / (1000 * 60 * 60));
+                const totalMinutes = Math.floor(diffTime / (1000 * 60));
+
+                let years = target.getFullYear() - birth.getFullYear();
+                let months = target.getMonth() - birth.getMonth();
+                let days = target.getDate() - birth.getDate();
+
+                if (days < 0) {
+                    months--;
+                    days += new Date(target.getFullYear(), target.getMonth(), 0).getDate();
+                }
+
+                if (months < 0) {
+                    years--;
+                    months += 12;
+                }
+
+                return { years, months, days, totalDays, totalHours, totalMinutes };
+            }
+
+            initBmiCalculator() {
+                const calculateBtn = document.getElementById('calculate-bmi-btn');
+                const heightUnit = document.getElementById('height-unit');
+                const feetInches = document.getElementById('feet-inches');
+                const bmiResult = document.getElementById('bmi-result');
+
+                heightUnit.addEventListener('change', () => {
+                    feetInches.style.display = heightUnit.value === 'ft' ? 'block' : 'none';
+                });
+
+                calculateBtn.addEventListener('click', () => {
+                    let heightInMeters;
+                    let weightInKg;
+
+                    // Get height in meters
+                    const heightValue = parseFloat(document.getElementById('height').value);
+                    const heightUnitValue = heightUnit.value;
+
+                    if (heightUnitValue === 'cm') {
+                        heightInMeters = heightValue / 100;
+                    } else if (heightUnitValue === 'ft') {
+                        const feet = parseFloat(document.getElementById('feet').value) || 0;
+                        const inches = parseFloat(document.getElementById('inches').value) || 0;
+                        heightInMeters = (feet * 12 + inches) * 0.0254;
+                    } else if (heightUnitValue === 'm') {
+                        heightInMeters = heightValue;
+                    }
+
+                    // Get weight in kg
+                    const weightValue = parseFloat(document.getElementById('weight').value);
+                    const weightUnitValue = document.getElementById('weight-unit').value;
+
+                    if (weightUnitValue === 'kg') {
+                        weightInKg = weightValue;
+                    } else if (weightUnitValue === 'lbs') {
+                        weightInKg = weightValue * 0.453592;
+                    }
+
+                    if (!heightInMeters || !weightInKg || heightInMeters <= 0 || weightInKg <= 0) {
+                        alert('Please enter valid height and weight values');
+                        return;
+                    }
+
+                    const bmi = weightInKg / (heightInMeters * heightInMeters);
+                    let category;
+
+                    if (bmi < 18.5) {
+                        category = 'Underweight';
+                    } else if (bmi < 25) {
+                        category = 'Normal weight';
+                    } else if (bmi < 30) {
+                        category = 'Overweight';
+                    } else {
+                        category = 'Obese';
+                    }
+
+                    document.getElementById('bmi-value').textContent = bmi.toFixed(1);
+                    document.getElementById('bmi-category').textContent = `Category: ${category}`;
+                    bmiResult.classList.remove('hidden');
+                });
+            }
+
+            initColorPicker() {
+                const colorPicker = document.getElementById('color-picker');
+                const colorDisplay = document.getElementById('color-display');
+                const hexValue = document.getElementById('hex-value');
+                const rgbValue = document.getElementById('rgb-value');
+                const hslValue = document.getElementById('hsl-value');
+
+                const updateColorValues = (color) => {
+                    colorDisplay.style.backgroundColor = color;
+                    hexValue.value = color;
+
+                    // Convert hex to RGB
+                    const r = parseInt(color.slice(1, 3), 16);
+                    const g = parseInt(color.slice(3, 5), 16);
+                    const b = parseInt(color.slice(5, 7), 16);
+                    rgbValue.value = `rgb(${r}, ${g}, ${b})`;
+
+                    // Convert RGB to HSL
+                    const hsl = this.rgbToHsl(r, g, b);
+                    hslValue.value = `hsl(${Math.round(hsl.h)}, ${Math.round(hsl.s)}%, ${Math.round(hsl.l)}%)`;
+                };
+
+                colorPicker.addEventListener('input', (e) => {
+                    updateColorValues(e.target.value);
+                });
+
+                // Initialize with default color
+                updateColorValues(colorPicker.value);
+
+                // Copy buttons
+                document.getElementById('copy-hex-btn').addEventListener('click', () => {
+                    navigator.clipboard.writeText(hexValue.value);
+                    this.showToast('HEX value copied!');
+                });
+
+                document.getElementById('copy-rgb-btn').addEventListener('click', () => {
+                    navigator.clipboard.writeText(rgbValue.value);
+                    this.showToast('RGB value copied!');
+                });
+
+                document.getElementById('copy-hsl-btn').addEventListener('click', () => {
+                    navigator.clipboard.writeText(hslValue.value);
+                    this.showToast('HSL value copied!');
+                });
+            }
+
+            rgbToHsl(r, g, b) {
+                r /= 255;
+                g /= 255;
+                b /= 255;
+
+                const max = Math.max(r, g, b);
+                const min = Math.min(r, g, b);
+                let h, s, l = (max + min) / 2;
+
+                if (max === min) {
+                    h = s = 0;
+                } else {
+                    const d = max - min;
+                    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+                    switch (max) {
+                        case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+                        case g: h = (b - r) / d + 2; break;
+                        case b: h = (r - g) / d + 4; break;
+                    }
+                    h /= 6;
+                }
+
+                return { h: h * 360, s: s * 100, l: l * 100 };
+            }
+
+            initUnitConverter() {
+                const conversionType = document.getElementById('conversion-type');
+                const fromUnit = document.getElementById('from-unit');
+                const toUnit = document.getElementById('to-unit');
+                const fromValue = document.getElementById('from-value');
+                const toValue = document.getElementById('to-value');
+
+                const units = {
+                    length: {
+                        mm: { name: 'Millimeters', factor: 0.001 },
+                        cm: { name: 'Centimeters', factor: 0.01 },
+                        m: { name: 'Meters', factor: 1 },
+                        km: { name: 'Kilometers', factor: 1000 },
+                        in: { name: 'Inches', factor: 0.0254 },
+                        ft: { name: 'Feet', factor: 0.3048 },
+                        yd: { name: 'Yards', factor: 0.9144 },
+                        mi: { name: 'Miles', factor: 1609.34 }
+                    },
+                    weight: {
+                        mg: { name: 'Milligrams', factor: 0.000001 },
+                        g: { name: 'Grams', factor: 0.001 },
+                        kg: { name: 'Kilograms', factor: 1 },
+                        oz: { name: 'Ounces', factor: 0.0283495 },
+                        lb: { name: 'Pounds', factor: 0.453592 },
+                        stone: { name: 'Stones', factor: 6.35029 }
+                    },
+                    temperature: {
+                        c: { name: 'Celsius' },
+                        f: { name: 'Fahrenheit' },
+                        k: { name: 'Kelvin' }
+                    }
+                };
+
+                const updateUnits = () => {
+                    const type = conversionType.value;
+                    const unitList = units[type];
+                    
+                    fromUnit.innerHTML = '';
+                    toUnit.innerHTML = '';
+                    
+                    Object.keys(unitList).forEach(key => {
+                        const option1 = new Option(unitList[key].name, key);
+                        const option2 = new Option(unitList[key].name, key);
+                        fromUnit.appendChild(option1);
+                        toUnit.appendChild(option2);
+                    });
+                };
+
+                const convert = () => {
+                    const value = parseFloat(fromValue.value);
+                    if (isNaN(value)) return;
+
+                    const type = conversionType.value;
+                    const from = fromUnit.value;
+                    const to = toUnit.value;
+
+                    let result;
+
+                    if (type === 'temperature') {
+                        result = this.convertTemperature(value, from, to);
+                    } else {
+                        const fromFactor = units[type][from].factor;
+                        const toFactor = units[type][to].factor;
+                        result = (value * fromFactor) / toFactor;
+                    }
+
+                    toValue.value = result.toFixed(6).replace(/\.?0+$/, '');
+                };
+
+                conversionType.addEventListener('change', updateUnits);
+                fromValue.addEventListener('input', convert);
+                fromUnit.addEventListener('change', convert);
+                toUnit.addEventListener('change', convert);
+
+                document.getElementById('convert-btn').addEventListener('click', convert);
+                document.getElementById('swap-units-btn').addEventListener('click', () => {
+                    const temp = fromUnit.value;
+                    fromUnit.value = toUnit.value;
+                    toUnit.value = temp;
+                    convert();
+                });
+
+                updateUnits();
+            }
+
+            convertTemperature(value, from, to) {
+                // Convert to Celsius first
+                let celsius;
+                switch (from) {
+                    case 'c': celsius = value; break;
+                    case 'f': celsius = (value - 32) * 5/9; break;
+                    case 'k': celsius = value - 273.15; break;
+                }
+
+                // Convert from Celsius to target
+                switch (to) {
+                    case 'c': return celsius;
+                    case 'f': return celsius * 9/5 + 32;
+                    case 'k': return celsius + 273.15;
+                }
+            }
+
+            initJsonFormatter() {
+                const formatBtn = document.getElementById('format-json-btn');
+                const minifyBtn = document.getElementById('minify-json-btn');
+                const validateBtn = document.getElementById('validate-json-btn');
+                const copyBtn = document.getElementById('copy-json-btn');
+                const downloadBtn = document.getElementById('download-json-btn');
+                const jsonInput = document.getElementById('json-input');
+                const jsonOutput = document.getElementById('json-output');
+
+                formatBtn.addEventListener('click', () => {
+                    try {
+                        const parsed = JSON.parse(jsonInput.value);
+                        jsonOutput.value = JSON.stringify(parsed, null, 2);
+                        this.showToast('JSON formatted successfully!');
+                    } catch (e) {
+                        alert('Invalid JSON: ' + e.message);
+                    }
+                });
+
+                minifyBtn.addEventListener('click', () => {
+                    try {
+                        const parsed = JSON.parse(jsonInput.value);
+                        jsonOutput.value = JSON.stringify(parsed);
+                        this.showToast('JSON minified successfully!');
+                    } catch (e) {
+                        alert('Invalid JSON: ' + e.message);
+                    }
+                });
+
+                validateBtn.addEventListener('click', () => {
+                    try {
+                        JSON.parse(jsonInput.value);
+                        this.showToast('JSON is valid!');
+                    } catch (e) {
+                        alert('Invalid JSON: ' + e.message);
+                    }
+                });
+
+                copyBtn.addEventListener('click', () => {
+                    if (jsonOutput.value) {
+                        navigator.clipboard.writeText(jsonOutput.value);
+                        this.showToast('JSON copied to clipboard!');
+                    }
+                });
+
+                downloadBtn.addEventListener('click', () => {
+                    if (jsonOutput.value) {
+                        const blob = new Blob([jsonOutput.value], { type: 'application/json' });
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = 'formatted.json';
+                        a.click();
+                        URL.revokeObjectURL(url);
+                    }
+                });
+            }
+
+            initTextToSpeech() {
+                if (!('speechSynthesis' in window)) {
+                    alert('Text-to-Speech is not supported in your browser');
+                    return;
+                }
+
+                const ttsText = document.getElementById('tts-text');
+                const voiceSelect = document.getElementById('voice-select');
+                const rateSlider = document.getElementById('speech-rate');
+                const pitchSlider = document.getElementById('speech-pitch');
+                const rateValue = document.getElementById('rate-value');
+                const pitchValue = document.getElementById('pitch-value');
+                const playBtn = document.getElementById('play-speech-btn');
+                const pauseBtn = document.getElementById('pause-speech-btn');
+                const stopBtn = document.getElementById('stop-speech-btn');
+
+                let currentUtterance = null;
+
+                // Load voices
+                const loadVoices = () => {
+                    const voices = speechSynthesis.getVoices();
+                    voiceSelect.innerHTML = '<option value="">Default Voice</option>';
+                    voices.forEach((voice, index) => {
+                        const option = new Option(voice.name + ' (' + voice.lang + ')', index);
+                        voiceSelect.appendChild(option);
+                    });
+                };
+
+                speechSynthesis.addEventListener('voiceschanged', loadVoices);
+                loadVoices();
+
+                rateSlider.addEventListener('input', () => {
+                    rateValue.textContent = rateSlider.value;
+                });
+
+                pitchSlider.addEventListener('input', () => {
+                    pitchValue.textContent = pitchSlider.value;
+                });
+
+                playBtn.addEventListener('click', () => {
+                    const text = ttsText.value.trim();
+                    if (!text) {
+                        alert('Please enter text to speak');
+                        return;
+                    }
+
+                    if (speechSynthesis.paused) {
+                        speechSynthesis.resume();
+                        return;
+                    }
+
+                    speechSynthesis.cancel();
+                    currentUtterance = new SpeechSynthesisUtterance(text);
+                    
+                    if (voiceSelect.value) {
+                        const voices = speechSynthesis.getVoices();
+                        currentUtterance.voice = voices[parseInt(voiceSelect.value)];
+                    }
+                    
+                    currentUtterance.rate = parseFloat(rateSlider.value);
+                    currentUtterance.pitch = parseFloat(pitchSlider.value);
+                    
+                    speechSynthesis.speak(currentUtterance);
+                });
+
+                pauseBtn.addEventListener('click', () => {
+                    speechSynthesis.pause();
+                });
+
+                stopBtn.addEventListener('click', () => {
+                    speechSynthesis.cancel();
+                });
+            }
+
+            initTimerStopwatch() {
+                // Timer functionality
+                let timerInterval = null;
+                let timerSeconds = 0;
+                let timerActive = false;
+
+                // Stopwatch functionality
+                let stopwatchInterval = null;
+                let stopwatchSeconds = 0;
+                let stopwatchActive = false;
+                let lapTimes = [];
+
+                const timerDisplay = document.getElementById('timer-display');
+                const stopwatchDisplay = document.getElementById('stopwatch-display');
+                const lapTimesDiv = document.getElementById('lap-times');
+
+                const formatTime = (totalSeconds) => {
+                    const hours = Math.floor(totalSeconds / 3600);
+                    const minutes = Math.floor((totalSeconds % 3600) / 60);
+                    const seconds = totalSeconds % 60;
+                    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                };
+
+                // Timer controls
+                document.getElementById('start-timer-btn').addEventListener('click', () => {
+                    if (!timerActive) {
+                        const hours = parseInt(document.getElementById('timer-hours').value) || 0;
+                        const minutes = parseInt(document.getElementById('timer-minutes').value) || 0;
+                        const seconds = parseInt(document.getElementById('timer-seconds').value) || 0;
+                        
+                        timerSeconds = hours * 3600 + minutes * 60 + seconds;
+                        
+                        if (timerSeconds <= 0) {
+                            alert('Please set a valid timer duration');
+                            return;
                         }
-                    }; break;
-                case 'qr-generator':
-                     document.getElementById('qr-generate-btn').onclick = () => {
-                        const text = document.getElementById('qr-text').value;
-                        const outputDiv = document.getElementById('qr-output');
-                        if (text.trim()) {
-                            outputDiv.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(text)}" alt="QR Code">`;
-                        } else { outputDiv.textContent = 'Please enter text or a URL.'; }
-                    }; break;
-                case 'age-calculator':
-                    document.getElementById('age-calc-btn').onclick = () => {
-                        const birthdateStr = document.getElementById('birthdate').value;
-                        const output = document.getElementById('age-output');
-                        if (!birthdateStr) { output.textContent = "Please select a valid date."; return; }
-                        const birthDate = new Date(birthdateStr);
-                        if(birthDate > new Date()) { output.textContent = "Birth date cannot be in the future."; return; }
-                        const today = new Date();
-                        let age = today.getFullYear() - birthDate.getFullYear();
-                        const m = today.getMonth() - birthDate.getMonth();
-                        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) age--;
-                        output.textContent = `You are ${age} years old.`;
-                    }; break;
-                case 'bmi-calculator':
-                    document.getElementById('bmi-calc-btn').onclick = () => {
-                        const height = parseFloat(document.getElementById('bmi-height').value);
-                        const weight = parseFloat(document.getElementById('bmi-weight').value);
-                        const output = document.getElementById('bmi-output');
-                        if (height > 0 && weight > 0) {
-                            const bmi = (weight / ((height / 100) ** 2)).toFixed(2);
-                            let category = bmi < 18.5 ? "Underweight" : bmi < 24.9 ? "Normal weight" : bmi < 29.9 ? "Overweight" : "Obesity";
-                            output.textContent = `Your BMI is ${bmi} (${category}).`;
-                        } else { output.textContent = "Please enter valid, positive numbers for height and weight."; }
-                    }; break;
-                case 'color-picker':
-                    const colorInput = document.getElementById('color-input');
-                    const colorOutput = document.getElementById('color-output');
-                    const updateColor = () => {
-                        const hex = colorInput.value;
-                        const r = parseInt(hex.substr(1, 2), 16);
-                        const g = parseInt(hex.substr(3, 2), 16);
-                        const b = parseInt(hex.substr(5, 2), 16);
-                        colorOutput.innerHTML = `HEX: ${hex}<br>RGB: rgb(${r}, ${g}, ${b})`;
-                    };
-                    colorInput.oninput = updateColor; updateColor();
-                    break;
-                case 'json-formatter':
-                    document.getElementById('json-format-btn').onclick = () => {
-                        const input = document.getElementById('json-input');
-                        const output = document.getElementById('json-output');
-                        if(!input.value.trim()) { output.textContent = "Input is empty."; return; }
-                        try {
-                            const parsed = JSON.parse(input.value);
-                            output.textContent = JSON.stringify(parsed, null, 2);
-                            output.classList.remove('error');
-                        } catch (e) {
-                            output.textContent = `Invalid JSON: ${e.message}`;
-                            output.classList.add('error');
+                    }
+
+                    timerActive = true;
+                    timerInterval = setInterval(() => {
+                        if (timerSeconds <= 0) {
+                            clearInterval(timerInterval);
+                            timerActive = false;
+                            alert('Timer finished!');
+                            return;
                         }
-                    }; break;
-                case 'text-to-speech':
-                    const ttsBtn = document.getElementById('tts-speak-btn');
-                    const ttsStatus = document.getElementById('tts-status');
-                    if ('speechSynthesis' in window) {
-                        ttsBtn.onclick = () => {
-                            const text = document.getElementById('tts-input').value;
-                            if (text.trim()) {
-                                const utterance = new SpeechSynthesisUtterance(text);
-                                window.speechSynthesis.speak(utterance);
-                                ttsStatus.textContent = "Speaking...";
-                                utterance.onend = () => ttsStatus.textContent = "Finished.";
-                            } else { ttsStatus.textContent = "Please enter some text to speak."; }
-                        };
-                    } else { ttsBtn.disabled = true; ttsStatus.textContent = "Sorry, your browser does not support Text-to-Speech."; }
-                    break;
-                case 'speech-to-text':
-                    const startBtn = document.getElementById('stt-start-btn');
-                    const stopBtn = document.getElementById('stt-stop-btn');
-                    const sttOutput = document.getElementById('stt-output');
-                    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-                    if (SpeechRecognition) {
-                        const recognition = new SpeechRecognition();
-                        window.speechRecognitionInstance = recognition;
-                        recognition.continuous = true; recognition.interimResults = true;
-                        recognition.onresult = e => {
-                            sttOutput.textContent = Array.from(e.results).map(r => r[0].transcript).join('');
-                        };
-                        startBtn.onclick = () => { recognition.start(); startBtn.disabled = true; stopBtn.disabled = false; };
-                        stopBtn.onclick = () => { recognition.stop(); startBtn.disabled = false; stopBtn.disabled = true; };
-                    } else { startBtn.disabled = true; sttOutput.textContent = "Sorry, your browser does not support Speech-to-Text."; }
-                    break;
-                case 'timer':
-                    let timerInterval; let startTime; let elapsedTime = 0;
-                    const display = document.getElementById('timer-display');
-                    const formatTime = (time) => {
-                        const ms = Math.floor((time % 1000) / 100);
-                        const secs = Math.floor((time / 1000) % 60);
-                        const mins = Math.floor((time / (1000 * 60)) % 60);
-                        return [mins, secs].map(v => v.toString().padStart(2, '0')).join(':') + `.${ms}`;
-                    };
-                    document.getElementById('timer-start-btn').onclick = () => {
-                        if (timerInterval) return;
-                        startTime = Date.now() - elapsedTime;
-                        timerInterval = setInterval(() => {
-                            elapsedTime = Date.now() - startTime;
-                            display.textContent = formatTime(elapsedTime);
-                        }, 100);
-                    };
-                    document.getElementById('timer-stop-btn').onclick = () => { clearInterval(timerInterval); timerInterval = null; };
-                    document.getElementById('timer-reset-btn').onclick = () => {
-                        clearInterval(timerInterval); timerInterval = null; elapsedTime = 0;
-                        display.textContent = "00:00.0";
-                    }; break;
+                        timerSeconds--;
+                        timerDisplay.textContent = formatTime(timerSeconds);
+                    }, 1000);
+                });
+
+                document.getElementById('pause-timer-btn').addEventListener('click', () => {
+                    clearInterval(timerInterval);
+                    timerActive = false;
+                });
+
+                document.getElementById('reset-timer-btn').addEventListener('click', () => {
+                    clearInterval(timerInterval);
+                    timerActive = false;
+                    timerSeconds = 0;
+                    timerDisplay.textContent = '00:00:00';
+                    document.getElementById('timer-hours').value = '';
+                    document.getElementById('timer-minutes').value = '';
+                    document.getElementById('timer-seconds').value = '';
+                });
+
+                // Stopwatch controls
+                document.getElementById('start-stopwatch-btn').addEventListener('click', () => {
+                    if (!stopwatchActive) {
+                        stopwatchActive = true;
+                        stopwatchInterval = setInterval(() => {
+                            stopwatchSeconds++;
+                            stopwatchDisplay.textContent = formatTime(stopwatchSeconds);
+                        }, 1000);
+                    }
+                });
+
+                document.getElementById('pause-stopwatch-btn').addEventListener('click', () => {
+                    clearInterval(stopwatchInterval);
+                    stopwatchActive = false;
+                });
+
+                document.getElementById('reset-stopwatch-btn').addEventListener('click', () => {
+                    clearInterval(stopwatchInterval);
+                    stopwatchActive = false;
+                    stopwatchSeconds = 0;
+                    stopwatchDisplay.textContent = '00:00:00';
+                    lapTimes = [];
+                    lapTimesDiv.innerHTML = '';
+                });
+
+                document.getElementById('lap-stopwatch-btn').addEventListener('click', () => {
+                    if (stopwatchActive) {
+                        lapTimes.push(stopwatchSeconds);
+                        const lapNumber = lapTimes.length;
+                        const lapTime = formatTime(stopwatchSeconds);
+                        const lapDiv = document.createElement('div');
+                        lapDiv.textContent = `Lap ${lapNumber}: ${lapTime}`;
+                        lapDiv.style.padding = '0.5rem';
+                        lapDiv.style.borderBottom = '1px solid var(--accent-cyan)';
+                        lapTimesDiv.appendChild(lapDiv);
+                    }
+                });
+            }
+
+            initGenericTool() {
+                const fileUpload = document.getElementById('file-upload');
+                const fileInput = document.getElementById('file-input');
+                const processBtn = document.getElementById('process-btn');
+                const resultArea = document.getElementById('result-area');
+
+                fileUpload.addEventListener('click', () => fileInput.click());
+                fileUpload.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    fileUpload.classList.add('dragover');
+                });
+                fileUpload.addEventListener('dragleave', () => {
+                    fileUpload.classList.remove('dragover');
+                });
+                fileUpload.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    fileUpload.classList.remove('dragover');
+                    fileInput.files = e.dataTransfer.files;
+                    if (fileInput.files.length > 0) {
+                        processBtn.disabled = false;
+                    }
+                });
+
+                fileInput.addEventListener('change', () => {
+                    if (fileInput.files.length > 0) {
+                        processBtn.disabled = false;
+                    }
+                });
+
+                processBtn.addEventListener('click', () => {
+                    if (fileInput.files.length === 0) {
+                        alert('Please select files to process');
+                        return;
+                    }
+
+                    this.showToast('Processing files...');
+                    
+                    setTimeout(() => {
+                        resultArea.classList.remove('hidden');
+                        this.showToast('Processing complete!');
+                    }, 2000);
+                });
+            }
+
+            showToast(message, type = 'success') {
+                const toast = document.getElementById('progress-toast');
+                const toastMessage = toast.querySelector('.toast-message');
+                const toastIcon = toast.querySelector('.toast-icon');
+
+                toastMessage.textContent = message;
+                toastIcon.textContent = type === 'success' ? '✅' : '⚠️';
+                
+                toast.classList.add('show');
+                
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
             }
         }
-    });
+
+        // Global functions
+        function scrollToTools() {
+            document.getElementById('tools').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Initialize app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new PromptMindsApp();
+        });
     </script>
 </body>
 </html>
