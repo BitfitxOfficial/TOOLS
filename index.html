@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I love all Bitfitx Tools</title>
+    
+    <!-- Fonts and Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- Global Styles & Design Theme --- */
+        :root {
+            --main-bg-color: #0d0f14;
+            --navbar-bg-color: #1c222d;
+            --sidebar-bg-color: #12151a;
+            --text-primary: #ffffff;
+            --text-secondary: #e0e0e0;
+            --accent-glow-color: #42f8f5;
+            --glow-shadow: 0 0 15px rgba(66, 248, 245, 0.6), 0 0 25px rgba(66, 248, 245, 0.4);
+            --glow-shadow-soft: 0 0 8px rgba(66, 248, 245, 0.5);
+            --button-bg: #12151a;
+            --font-family: 'Orbitron', sans-serif;
+            --error-color: #ff4d4d;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: var(--font-family); background-color: var(--main-bg-color); color: var(--text-secondary); overflow-x: hidden; }
+        h1, h2, h3 { color: var(--text-primary); font-weight: 700; text-shadow: 0 0 5px var(--accent-glow-color); }
+        a { color: var(--text-secondary); text-decoration: none; transition: color 0.3s ease, text-shadow 0.3s ease; }
+        a:hover { color: var(--accent-glow-color); text-shadow: var(--glow-shadow-soft); }
+
+        /* --- Layout --- */
+        .container { display: flex; min-height: 100vh; }
+        .main-content { margin-top: 75px; margin-left: 250px; padding: 2rem; width: calc(100% - 250px); transition: margin-left 0.3s ease-in-out, width 0.3s ease-in-out; }
+
+        /* --- Header / Navbar --- */
+        .header { background-color: var(--navbar-bg-color); padding: 1rem 2rem; position: fixed; top: 0; left: 0; width: 100%; display: flex; justify-content: space-between; align-items: center; z-index: 1000; border-bottom: 1px solid var(--accent-glow-color); box-shadow: 0 2px 10px rgba(66, 248, 245, 0.2); }
+        .logo-container { display: flex; align-items: center; }
+        .logo-icon { font-size: 2rem; color: var(--accent-glow-color); text-shadow: var(--glow-shadow); margin-right: 15px; animation: pulse-glow 2s infinite ease-in-out; }
+        .logo-text { font-size: 1.5rem; font-weight: 700; color: var(--text-primary); text-shadow: 0 0 8px var(--accent-glow-color); }
+        .nav-links { list-style: none; display: flex; }
+        .nav-links li { margin-left: 2rem; }
+        .nav-links a { font-size: 1rem; padding-bottom: 5px; position: relative; }
+        .nav-links a::after { content: ''; position: absolute; width: 0; height: 2px; bottom: 0; left: 50%; transform: translateX(-50%); background-color: var(--accent-glow-color); box-shadow: var(--glow-shadow-soft); transition: width 0.3s ease; }
+        .nav-links a:hover::after { width: 100%; }
+        .hamburger { display: none; flex-direction: column; cursor: pointer; }
+        .hamburger .bar { width: 25px; height: 3px; background-color: var(--text-primary); margin: 4px 0; transition: 0.4s; box-shadow: var(--glow-shadow-soft); }
+
+        /* --- Sidebar --- */
+        .sidebar { width: 250px; background-color: var(--sidebar-bg-color); padding: 1rem; position: fixed; top: 75px; left: 0; height: calc(100vh - 75px); overflow-y: auto; box-shadow: 2px 0 15px rgba(66, 248, 245, 0.2); transition: transform 0.3s ease-in-out; z-index: 999; }
+        .tool-category h3 { color: var(--accent-glow-color); font-size: 1.1rem; margin-top: 1.5rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid rgba(66, 248, 245, 0.3); cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .tool-list { list-style: none; max-height: 0; overflow: hidden; transition: max-height 0.5s ease-out; }
+        .tool-list.active { max-height: 1000px; }
+        .tool-list li a { display: flex; align-items: center; padding: 0.75rem 0.5rem; border-radius: 5px; }
+        .tool-list li a:hover { background-color: rgba(66, 248, 245, 0.1); color: var(--accent-glow-color); }
+        .tool-list li i { margin-right: 15px; width: 20px; text-align: center; }
+
+        /* --- Hero Section & Tool Grid --- */
+        .hero-section { text-align: center; padding: 4rem 1rem; background: radial-gradient(circle, rgba(13,15,20,0.8) 0%, var(--main-bg-color) 70%); }
+        .hero-section h1 { font-size: 3.5rem; margin-bottom: 1rem; }
+        .hero-section p { font-size: 1.2rem; max-width: 800px; margin: 0 auto 2rem auto; }
+        .cta-button { background: var(--button-bg); color: var(--text-primary); border: 2px solid var(--accent-glow-color); padding: 1rem 2.5rem; font-size: 1.2rem; font-family: var(--font-family); cursor: pointer; border-radius: 50px; transition: all 0.3s; }
+        .cta-button:hover { background-color: var(--accent-glow-color); color: var(--main-bg-color); box-shadow: var(--glow-shadow); transform: translateY(-3px); }
+        .cta-button:disabled { cursor: not-allowed; background: #333; border-color: #555; color: #888; transform: none; box-shadow: none; }
+        #tools-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; padding-top: 2rem; }
+        .tool-card { background: var(--sidebar-bg-color); border-radius: 10px; padding: 1.5rem; text-align: center; border: 1px solid transparent; box-shadow: 0 4px 20px rgba(0,0,0,0.4); transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease; position: relative; }
+        .tool-card:hover { transform: translateY(--10px); border-color: var(--accent-glow-color); box-shadow: 0 0 20px rgba(66, 248, 245, 0.4); }
+        .tool-card.simulated:after { content: 'UI DEMO'; position: absolute; top: 10px; right: 10px; background: var(--accent-glow-color); color: var(--main-bg-color); padding: 3px 8px; border-radius: 5px; font-size: 0.7rem; font-weight: bold; }
+        .tool-card i { font-size: 3rem; color: var(--accent-glow-color); margin-bottom: 1rem; text-shadow: var(--glow-shadow-soft); }
+        .tool-card h2 { font-size: 1.3rem; margin-bottom: 0.5rem; }
+        .tool-card p { font-size: 0.9rem; line-height: 1.5; margin-bottom: 1.5rem; }
+        .tool-card .open-tool-btn { background: var(--button-bg); color: var(--text-primary); border: 1px solid var(--accent-glow-color); padding: 0.75rem 1.5rem; cursor: pointer; border-radius: 5px; font-family: var(--font-family); transition: all 0.3s ease; }
+        .tool-card .open-tool-btn:hover { background-color: var(--accent-glow-color); color: var(--main-bg-color); box-shadow: var(--glow-shadow); }
+
+        /* --- Content Sections (About/Donation) --- */
+        .content-section { padding: 4rem 2rem; margin-top: 4rem; background-color: var(--sidebar-bg-color); border-radius: 10px; border-top: 1px solid var(--accent-glow-color); box-shadow: 0 -4px 20px rgba(66, 248, 245, 0.1); }
+        .content-section h2 { text-align: center; font-size: 2.5rem; margin-bottom: 2.5rem; text-transform: uppercase; letter-spacing: 2px; }
+        .content-section p { font-size: 1rem; font-family: sans-serif; line-height: 1.8; max-width: 900px; margin: 0 auto 1.5rem auto; text-align: justify; }
+        .content-section strong { color: var(--accent-glow-color); }
+        .donation-box { max-width: 700px; margin: 2rem auto 0 auto; padding: 1.5rem; background: var(--main-bg-color); border: 1px solid var(--accent-glow-color); border-radius: 8px; text-align: center; }
+        .donation-box h3 { color: var(--accent-glow-color); margin-bottom: 1rem; }
+        .wallet-address-container { display: flex; align-items: center; justify-content: center; background: var(--sidebar-bg-color); border-radius: 5px; padding: 0.5rem; }
+        .wallet-address { font-family: monospace; font-size: 1rem; color: var(--text-secondary); word-break: break-all; flex-grow: 1; text-align: left; padding: 0 0.5rem; }
+        .copy-btn { padding: 0.5rem 1rem; font-size: 1rem; border-radius: 5px; margin-left: 0.5rem; min-width: 50px; }
+
+        /* --- Footer --- */
+        .footer { background-color: var(--sidebar-bg-color); color: var(--text-secondary); padding: 2rem; text-align: center; border-top: 1px solid var(--accent-glow-color); box-shadow: 0 -2px 10px rgba(66, 248, 245, 0.2); margin-top: 4rem; width: 100%; }
+        .footer-content { display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+        .footer-links a { margin: 0 1rem; }
+        .social-icons a { font-size: 1.5rem; margin: 0 0.75rem; }
+        
+        /* --- Modal & Tool UI Styles --- */
+        .modal { display: none; position: fixed; z-index: 1001; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.7); backdrop-filter: blur(5px); }
+        .modal-content { background-color: var(--navbar-bg-color); margin: 10% auto; padding: 2rem; border: 1px solid var(--accent-glow-color); border-radius: 10px; width: 80%; max-width: 700px; box-shadow: var(--glow-shadow); position: relative; animation: slide-in 0.5s ease-out; }
+        @keyframes slide-in { from { transform: translateY(-50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .close-btn { color: var(--text-secondary); position: absolute; top: 1rem; right: 1.5rem; font-size: 2rem; font-weight: bold; cursor: pointer; transition: color 0.3s, transform 0.3s; }
+        .close-btn:hover { color: var(--accent-glow-color); transform: rotate(90deg); }
+        .tool-ui-container { margin-top: 1rem; }
+        .tool-ui-container h2 { text-align: center; margin-bottom: 2rem; }
+        .file-drop-area { border: 2px dashed var(--accent-glow-color); border-radius: 10px; padding: 2rem; text-align: center; cursor: pointer; transition: background-color 0.3s, border-color 0.3s; }
+        .file-drop-area.dragover { background-color: rgba(66, 248, 245, 0.1); border-color: var(--text-primary); }
+        .file-drop-area p { margin: 0.5rem 0; }
+        .upload-btn { background-color: var(--accent-glow-color); color: var(--main-bg-color); border: none; padding: 0.75rem 1.5rem; font-family: var(--font-family); cursor: pointer; border-radius: 5px; box-shadow: var(--glow-shadow-soft); }
+        .processing-status { text-align: center; margin-top: 1rem; font-size: 1.1rem; display: none; }
+        .tool-ui-container textarea, .tool-ui-container input, .tool-ui-container select { width: 100%; padding: 0.75rem; margin-bottom: 1rem; background: var(--sidebar-bg-color); border: 1px solid var(--accent-glow-color); color: var(--text-primary); border-radius: 5px; font-family: var(--font-family); }
+        .tool-ui-container input[type="color"] { padding: 0; height: 50px; cursor: pointer; }
+        .tool-ui-container input[type="file"] { display: none; }
+        .tool-output { margin-top: 1.5rem; background: var(--main-bg-color); padding: 1rem; border-radius: 5px; border: 1px solid rgba(66, 248, 245, 0.3); min-height: 50px; white-space: pre-wrap; word-wrap: break-word; font-size: 0.9rem; }
+        .tool-output.error { border-color: var(--error-color); color: var(--error-color); }
+        .tool-grid-2-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .timer-display { font-size: 3rem; text-align: center; letter-spacing: 5px; margin: 1rem 0; text-shadow: var(--glow-shadow-soft); }
+        .timer-controls button { margin: 0 0.5rem; }
+        #image-preview { max-width: 100%; max-height: 200px; margin-top: 1rem; border-radius: 5px; }
+
+        /* --- Animations & Responsive Design --- */
+        @keyframes pulse-glow { 0%, 100% { text-shadow: var(--glow-shadow); } 50% { text-shadow: 0 0 20px rgba(66, 248, 245, 1), 0 0 30px rgba(66, 248, 245, 0.7); } }
+        @media (max-width: 1200px) { #tools-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 992px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.active { transform: translateX(0); }
+            .main-content { margin-left: 0; width: 100%; }
+            .main-content.sidebar-active { margin-left: 250px; width: calc(100% - 250px); }
+            .nav-links { display: none; position: absolute; right: 0; top: 75px; background-color: var(--navbar-bg-color); width: 100%; flex-direction: column; text-align: center; }
+            .nav-links.active { display: flex; }
+            .nav-links li { margin: 1rem 0; }
+            .hamburger { display: flex; }
+        }
+        @media (max-width: 768px) {
+            #tools-grid, .tool-grid-2-col { grid-template-columns: 1fr; }
+            .hero-section h1 { font-size: 2.5rem; }
+            .logo-text { font-size: 1.2rem; }
+            .modal-content { width: 90%; margin: 15% auto; }
+            .wallet-address { font-size: 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo-container">
+                <i class="fas fa-bolt logo-icon"></i>
+                <span class="logo-text">I love all Bitfitx Tools</span>
+            </div>
+            <nav>
+                <ul class="nav-links" id="nav-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#tools">Tools</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="mailto:bitfitxofficial1@gmail.com">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="hamburger" id="hamburger">
+                <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+            </div>
+        </header>
+
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="tool-category">
+                <h3 class="category-title">🧰 Browser Utilities (Functional)<i class="fas fa-chevron-down"></i></h3>
+                <ul class="tool-list">
+                    <li><a href="#" data-tool="image-compressor"><i class="fas fa-compress"></i> Image Compressor</a></li>
+                    <li><a href="#" data-tool="image-converter"><i class="fas fa-exchange-alt"></i> Image Converter</a></li>
+                    <li><a href="#" data-tool="qr-generator"><i class="fas fa-qrcode"></i> QR Code Generator</a></li>
+                    <li><a href="#" data-tool="password-generator"><i class="fas fa-key"></i> Password Generator</a></li>
+                    <li><a href="#" data-tool="word-counter"><i class="fas fa-calculator"></i> Word Counter</a></li>
+                    <li><a href="#" data-tool="age-calculator"><i class="fas fa-birthday-cake"></i> Age Calculator</a></li>
+                    <li><a href="#" data-tool="bmi-calculator"><i class="fas fa-weight"></i> BMI Calculator</a></li>
+                    <li><a href="#" data-tool="color-picker"><i class="fas fa-palette"></i> Color Picker</a></li>
+                    <li><a href="#" data-tool="json-formatter"><i class="fas fa-code"></i> JSON Formatter</a></li>
+                    <li><a href="#" data-tool="text-to-speech"><i class="fas fa-volume-up"></i> Text to Speech</a></li>
+                    <li><a href="#" data-tool="speech-to-text"><i class="fas fa-microphone"></i> Speech to Text</a></li>
+                    <li><a href="#" data-tool="timer"><i class="fas fa-stopwatch"></i> Timer / Stopwatch</a></li>
+                </ul>
+            </div>
+            <div class="tool-category">
+                <h3 class="category-title">🔻 Advanced Converters (UI Demo)<i class="fas fa-chevron-down"></i></h3>
+                <ul class="tool-list">
+                    <li><a href="#" data-tool="merge-pdf"><i class="fas fa-compress-arrows-alt"></i> Merge PDF</a></li>
+                    <li><a href="#" data-tool="split-pdf"><i class="fas fa-columns"></i> Split PDF</a></li>
+                    <li><a href="#" data-tool="compress-pdf"><i class="fas fa-file-archive"></i> Compress PDF</a></li>
+                    <li><a href="#" data-tool="pdf-to-word"><i class="fas fa-file-word"></i> PDF to Word</a></li>
+                    <li><a href="#" data-tool="word-to-pdf"><i class="fas fa-file-pdf"></i> Word to PDF</a></li>
+                    <li><a href="#" data-tool="jpg-to-pdf"><i class="fas fa-file-pdf"></i> JPG to PDF</a></li>
+                    <li><a href="#" data-tool="audio-converter"><i class="fas fa-music"></i> Audio Converter</a></li>
+                    <li><a href="#" data-tool="video-compressor"><i class="fas fa-video"></i> Video Compressor</a></li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content" id="main-content">
+            <section id="home" class="hero-section">
+                <h1>I love all Bitfitx Tools</h1>
+                <p>Your one-stop futuristic hub for file conversions and utility tools. Fast, secure, and entirely browser-based.</p>
+                <a href="#tools" class="cta-button">Explore Tools</a>
+            </section>
+            
+            <section id="tools">
+                <div id="tools-grid"></div>
+            </section>
+
+            <section id="about" class="content-section">
+                <h2>About Us</h2>
+                <p>At BITFITX, we are committed to delivering cutting-edge technology solutions that empower individuals, entrepreneurs, and businesses worldwide. Founded with a passion for innovation, our mission is to make digital transformation accessible, secure, and impactful for everyone.</p>
+                <p>From our inception, we have focused on creating user-friendly platforms that bridge the gap between advanced digital technology and real-world needs. Our expertise spans blockchain development, AI-powered applications, and secure web solutions designed to enhance performance and scalability.</p>
+                <p>We believe that technology should be simple, transparent, and built for people. That’s why our dedicated team of expert developers, creative designers, and strategic thinkers works tirelessly to deliver products that combine innovation, security, and efficiency. Each project is crafted to meet the highest standards, ensuring our clients gain a competitive edge in the ever-evolving digital economy.</p>
+                <p>Our services are trusted by a growing global community seeking reliable digital solutions that adapt to changing market trends. We prioritize cybersecurity, data protection, and seamless user experiences, making us a preferred partner for businesses aiming to thrive in the digital era.</p>
+                <p>At BITFITX, integrity and transparency are at the heart of our operations. We maintain open communication, deliver measurable results, and provide continuous support to help clients achieve their long-term goals.</p>
+                <p>As technology continues to evolve, our vision remains clear — to lead innovation and create solutions that are not only relevant today but also future-ready. Whether you’re an individual exploring new possibilities or a company scaling globally, we are here to turn your ideas into reality.</p>
+                <p><strong>Join us in shaping the future of technology — today.</strong></p>
+            </section>
+
+            <section id="donate" class="content-section">
+                <h2>Support Our Mission</h2>
+                <p>If you find our tools useful, please consider supporting our development. Your donations help us maintain and improve the platform, keeping it free for everyone. We appreciate your support!</p>
+                <div class="donation-box">
+                    <h3>BNB (BEP-20)</h3>
+                    <div class="wallet-address-container">
+                        <span id="bep20-address" class="wallet-address">0xc3945FdC1E267fAd03802a707da3198770937e93</span>
+                        <button id="copy-address-btn" class="cta-button copy-btn" title="Copy to clipboard">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>© 2025 I love all Bitfitx Tools. All Rights Reserved.</p>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a> | <a href="mailto:bitfitxofficial1@gmail.com">Contact Us</a>
+            </div>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-youtube"></i></a><a href="#"><i class="fab fa-twitter"></i></a><a href="#"><i class="fab fa-github"></i></a><a href="#"><i class="fab fa-linkedin"></i></a>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Tool Modal -->
+    <div id="tool-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="close-modal-btn">&times;</span>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const toolsData = {
+            // Implemented tools first
+            'image-compressor': { title: 'Image Compressor', icon: 'fas fa-compress', description: 'Reduce JPG/PNG file size using browser-based compression.', type: 'implemented' },
+            'image-converter': { title: 'Image Converter', icon: 'fas fa-exchange-alt', description: 'Convert images to JPG, PNG, or WEBP formats.', type: 'implemented' },
+            'qr-generator': { title: 'QR Code Generator', icon: 'fas fa-qrcode', description: 'Create custom QR codes for URLs, text, and more.', type: 'implemented' },
+            'password-generator': { title: 'Password Generator', icon: 'fas fa-key', description: 'Generate strong, secure, and random passwords.', type: 'implemented' },
+            'word-counter': { title: 'Word & Character Counter', icon: 'fas fa-calculator', description: 'Count words, characters, and sentences in your text.', type: 'implemented' },
+            'age-calculator': { title: 'Age Calculator', icon: 'fas fa-birthday-cake', description: 'Calculate your exact age from your birth date.', type: 'implemented' },
+            'bmi-calculator': { title: 'BMI Calculator', icon: 'fas fa-weight', description: 'Calculate your Body Mass Index.', type: 'implemented' },
+            'color-picker': { title: 'Color Picker', icon: 'fas fa-palette', description: 'Pick colors and get HEX/RGB/HSL values.', type: 'implemented' },
+            'json-formatter': { title: 'JSON Formatter', icon: 'fas fa-code', description: 'Format, validate, and beautify your JSON data.', type: 'implemented' },
+            'text-to-speech': { title: 'Text to Speech', icon: 'fas fa-volume-up', description: 'Convert written text into natural-sounding speech.', type: 'implemented' },
+            'speech-to-text': { title: 'Speech to Text', icon: 'fas fa-microphone', description: 'Transcribe spoken words into written text.', type: 'implemented' },
+            'timer': { title: 'Timer / Stopwatch', icon: 'fas fa-stopwatch', description: 'A simple, accurate timer and stopwatch.', type: 'implemented' },
+            // Simulated tools last
+            'merge-pdf': { title: 'Merge PDF', icon: 'fas fa-compress-arrows-alt', description: 'Combine multiple PDF files into one single document.', type: 'simulated' },
+            'split-pdf': { title: 'Split PDF', icon: 'fas fa-columns', description: 'Extract pages or split a PDF into multiple files.', type: 'simulated' },
+            'compress-pdf': { title: 'Compress PDF', icon: 'fas fa-file-archive', description: 'Reduce the file size of your PDF while maintaining quality.', type: 'simulated' },
+            'pdf-to-word': { title: 'PDF to Word', icon: 'fas fa-file-word', description: 'Convert your PDF files to editable Word documents.', type: 'simulated' },
+            'word-to-pdf': { title: 'Word to PDF', icon: 'fas fa-file-pdf', description: 'Convert Word documents to professional-looking PDFs.', type: 'simulated' },
+            'jpg-to-pdf': { title: 'JPG to PDF', icon: 'fas fa-file-pdf', description: 'Combine multiple JPG images into a single PDF file.', type: 'simulated' },
+            'audio-converter': { title: 'Audio Converter', icon: 'fas fa-music', description: 'Convert audio files between different formats like MP3, WAV.', type: 'simulated' },
+            'video-compressor': { title: 'Video Compressor', icon: 'fas fa-video', description: 'Reduce the file size of your video files.', type: 'simulated' },
+        };
+
+        const toolsGrid = document.getElementById('tools-grid');
+        for (const toolId in toolsData) {
+            const tool = toolsData[toolId];
+            const card = document.createElement('div');
+            card.className = 'tool-card';
+            if (tool.type === 'simulated') {
+                card.classList.add('simulated');
+            }
+            card.innerHTML = `<i class="${tool.icon}"></i><h2>${tool.title}</h2><p>${tool.description}</p>
+                <button class="open-tool-btn" data-tool="${toolId}">Open Tool</button>`;
+            toolsGrid.appendChild(card);
+        }
+
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('nav-links');
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('main-content');
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            sidebar.classList.toggle('active');
+            mainContent.classList.toggle('sidebar-active');
+        });
+        
+        document.querySelectorAll('.category-title').forEach(title => {
+            title.addEventListener('click', () => {
+                title.nextElementSibling.classList.toggle('active');
+                title.querySelector('i').classList.toggle('fa-chevron-down');
+                title.querySelector('i').classList.toggle('fa-chevron-up');
+            });
+        });
+
+        const modal = document.getElementById('tool-modal');
+        const modalBody = document.getElementById('modal-body');
+        const closeModalBtn = document.getElementById('close-modal-btn');
+
+        document.body.addEventListener('click', (e) => {
+            const targetElement = e.target.closest('[data-tool]');
+            if (targetElement) openToolModal(targetElement.dataset.tool);
+        });
+        
+        const closeToolModal = () => {
+            modal.style.display = 'none';
+            window.speechSynthesis.cancel();
+            if (window.speechRecognitionInstance) window.speechRecognitionInstance.stop();
+        };
+        closeModalBtn.onclick = closeToolModal;
+        window.onclick = (e) => { if (e.target == modal) closeToolModal(); };
+
+        const copyBtn = document.getElementById('copy-address-btn');
+        copyBtn.addEventListener('click', () => {
+            const address = document.getElementById('bep20-address').textContent;
+            navigator.clipboard.writeText(address).then(() => {
+                const originalIcon = copyBtn.innerHTML;
+                copyBtn.innerHTML = `<i class="fas fa-check"></i>`;
+                setTimeout(() => { copyBtn.innerHTML = originalIcon; }, 2000);
+            }).catch(err => { console.error('Failed to copy text: ', err); alert('Failed to copy address.'); });
+        });
+
+        function openToolModal(toolId) {
+            const tool = toolsData[toolId];
+            const content = (tool.type === 'implemented') ? getImplementedToolHTML(toolId, tool) : getSimulatedToolHTML(tool);
+            modalBody.innerHTML = content;
+            modal.style.display = 'block';
+
+            if (tool.type === 'implemented') addToolFunctionality(toolId);
+            else addSimulatedFunctionality();
+        }
+
+        function getSimulatedToolHTML(tool) {
+            return `
+                <div class="tool-ui-container"><h2>${tool.title}</h2>
+                    <div class="file-drop-area" id="file-drop-area">
+                        <i class="${tool.icon}" style="font-size: 3rem; color: #42f8f5;"></i><p>Drag & Drop files here or</p>
+                        <button class="upload-btn">Select Files</button>
+                    </div>
+                    <div class="processing-status" id="processing-status"></div>
+                    <div class="tool-output">
+                        <strong style="color: var(--accent-glow-color);">NOTE:</strong> This tool is a UI Demonstration. Complex file conversions require server-side processing, which is not available in this frontend-only application.
+                    </div>
+                </div>`;
+        }
+
+        function addSimulatedFunctionality() {
+            const dropArea = document.getElementById('file-drop-area');
+            const status = document.getElementById('processing-status');
+            const process = () => {
+                status.style.display = 'block';
+                status.innerHTML = 'Simulating Upload...';
+                setTimeout(() => {
+                    status.innerHTML = 'Simulating Processing...';
+                    setTimeout(() => { status.innerHTML = '<span style="color: #0f0;">Simulation Complete!</span>'; }, 1500);
+                }, 1000);
+            };
+            if(dropArea) {
+                dropArea.addEventListener('dragover', e => { e.preventDefault(); dropArea.classList.add('dragover'); });
+                dropArea.addEventListener('dragleave', () => dropArea.classList.remove('dragover'));
+                dropArea.addEventListener('drop', e => { e.preventDefault(); dropArea.classList.remove('dragover'); process(); });
+                dropArea.querySelector('.upload-btn').addEventListener('click', process);
+            }
+        }
+
+        function getImplementedToolHTML(toolId, tool) {
+            let specificUI = '';
+            switch(toolId) {
+                case 'image-compressor':
+                    specificUI = `<label for="image-upload-btn" class="upload-btn">Select Image</label><input type="file" id="image-upload-btn" accept="image/jpeg, image/png">
+                        <label>Quality: <span id="quality-val">0.7</span></label><input type="range" id="quality-slider" min="0.1" max="1" step="0.1" value="0.7">
+                        <div class="tool-output" id="image-output">Select an image to begin.</div>`; break;
+                case 'image-converter':
+                    specificUI = `<label for="image-upload-btn" class="upload-btn">Select Image</label><input type="file" id="image-upload-btn" accept="image/*">
+                        <label for="format-select">Convert to:</label>
+                        <select id="format-select"><option value="jpeg">JPG</option><option value="png">PNG</option><option value="webp">WEBP</option></select>
+                        <div class="tool-output" id="image-output">Select an image and format.</div>`; break;
+                case 'word-counter':
+                    specificUI = `<textarea id="wc-textarea" rows="8" placeholder="Paste text here..."></textarea>
+                        <div class="tool-output" id="wc-output">Words: 0 | Characters: 0 | Sentences: 0</div>`; break;
+                case 'password-generator':
+                    specificUI = `<label>Length: <span id="pg-length-val">12</span></label><input type="range" id="pg-length" min="6" max="32" value="12">
+                        <div><input type="checkbox" id="pg-uppercase" checked> Uppercase</div><div><input type="checkbox" id="pg-numbers" checked> Numbers</div><div><input type="checkbox" id="pg-symbols" checked> Symbols</div>
+                        <button class="cta-button" id="pg-generate-btn" style="margin-top: 1rem;">Generate</button>
+                        <div class="tool-output" id="pg-output" style="cursor: pointer;" title="Click to copy">...</div>`; break;
+                case 'qr-generator':
+                    specificUI = `<input type="text" id="qr-text" placeholder="Enter URL or text"><button class="cta-button" id="qr-generate-btn">Generate</button>
+                        <div class="tool-output" id="qr-output" style="text-align:center; min-height: 160px;"></div>`; break;
+                case 'age-calculator':
+                    specificUI = `<label for="birthdate">Your Birth Date:</label><input type="date" id="birthdate">
+                        <button class="cta-button" id="age-calc-btn">Calculate</button><div class="tool-output" id="age-output">Select your birth date.</div>`; break;
+                case 'bmi-calculator':
+                    specificUI = `<div class="tool-grid-2-col"><div><label>Height (cm):</label><input type="number" id="bmi-height" placeholder="e.g., 180"></div><div><label>Weight (kg):</label><input type="number" id="bmi-weight" placeholder="e.g., 75"></div></div>
+                        <button class="cta-button" id="bmi-calc-btn">Calculate</button><div class="tool-output" id="bmi-output">Enter your height and weight.</div>`; break;
+                case 'color-picker':
+                    specificUI = `<label>Select Color:</label><input type="color" id="color-input" value="#42f8f5" style="width:100%; height: 50px;">
+                        <div class="tool-output" id="color-output"></div>`; break;
+                case 'json-formatter':
+                    specificUI = `<textarea id="json-input" rows="10" placeholder="Paste JSON here..."></textarea><button class="cta-button" id="json-format-btn">Format</button>
+                        <div class="tool-output" id="json-output">Formatted JSON will appear here.</div>`; break;
+                case 'text-to-speech':
+                    specificUI = `<textarea id="tts-input" rows="6" placeholder="Type text to speak..."></textarea><button class="cta-button" id="tts-speak-btn">Speak</button>
+                        <div class="tool-output" id="tts-status">Ready.</div>`; break;
+                case 'speech-to-text':
+                    specificUI = `<button class="cta-button" id="stt-start-btn">Start Listening</button><button class="cta-button" id="stt-stop-btn" disabled>Stop</button>
+                        <div class="tool-output" id="stt-output">Transcript appears here...</div>`; break;
+                case 'timer':
+                    specificUI = `<div class="timer-display" id="timer-display">00:00:00.0</div><div class="timer-controls" style="text-align:center;">
+                        <button class="cta-button" id="timer-start-btn">Start</button><button class="cta-button" id="timer-stop-btn">Stop</button><button class="cta-button" id="timer-reset-btn">Reset</button></div>`; break;
+            }
+            return `<div class="tool-ui-container"><h2>${tool.title}</h2>${specificUI}</div>`;
+        }
+
+        // --- All Tool Logic ---
+        function addToolFunctionality(toolId) {
+            const handleImageTools = (isCompressor) => {
+                const fileInput = document.getElementById('image-upload-btn');
+                const outputDiv = document.getElementById('image-output');
+                let qualitySlider, formatSelect;
+                if (isCompressor) {
+                    qualitySlider = document.getElementById('quality-slider');
+                    qualitySlider.oninput = () => document.getElementById('quality-val').textContent = qualitySlider.value;
+                } else {
+                    formatSelect = document.getElementById('format-select');
+                }
+                
+                const processImage = () => {
+                    if (!fileInput.files || fileInput.files.length === 0) {
+                        outputDiv.textContent = "Please select a file first.";
+                        return;
+                    }
+                    const file = fileInput.files[0];
+                    outputDiv.textContent = "Processing...";
+                    const reader = new FileReader();
+                    reader.onload = e => {
+                        const img = new Image();
+                        img.onload = () => {
+                            const canvas = document.createElement('canvas');
+                            canvas.width = img.width; canvas.height = img.height;
+                            const ctx = canvas.getContext('2d');
+                            ctx.drawImage(img, 0, 0);
+                            const mimeType = isCompressor ? 'image/jpeg' : `image/${formatSelect.value}`;
+                            const quality = isCompressor ? parseFloat(qualitySlider.value) : 0.92;
+                            const dataUrl = canvas.toDataURL(mimeType, quality);
+                            const originalSize = (file.size / 1024).toFixed(2);
+                            const newSize = (dataUrl.length * 0.75 / 1024).toFixed(2);
+                            outputDiv.innerHTML = `<p>Original: ${originalSize} KB | New: ~${newSize} KB</p>
+                                <img src="${dataUrl}" id="image-preview" alt="Preview">
+                                <a href="${dataUrl}" download="bitfitx-image.${isCompressor ? 'jpg' : formatSelect.value}" class="cta-button" style="margin-top:1rem; display:inline-block;">Download Image</a>`;
+                        };
+                        img.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                };
+                fileInput.onchange = processImage;
+                if (qualitySlider) qualitySlider.onchange = processImage;
+                if (formatSelect) formatSelect.onchange = processImage;
+            };
+
+            switch(toolId) {
+                case 'image-compressor': handleImageTools(true); break;
+                case 'image-converter': handleImageTools(false); break;
+                case 'word-counter':
+                    document.getElementById('wc-textarea').oninput = e => {
+                        const text = e.target.value;
+                        const words = text.match(/\b[-'\w]+\b/g)?.length || 0;
+                        const sentences = text.match(/[^.!?]+[.!?]+/g)?.length || 0;
+                        document.getElementById('wc-output').innerHTML = `Words: ${words} | Characters: ${text.length} | Sentences: ${sentences}`;
+                    }; break;
+                case 'password-generator':
+                    const pgLength = document.getElementById('pg-length');
+                    const pgOutput = document.getElementById('pg-output');
+                    pgLength.oninput = () => document.getElementById('pg-length-val').textContent = pgLength.value;
+                    document.getElementById('pg-generate-btn').onclick = () => {
+                        let charset = "abcdefghijklmnopqrstuvwxyz";
+                        if (document.getElementById('pg-uppercase').checked) charset += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                        if (document.getElementById('pg-numbers').checked) charset += "0123456789";
+                        if (document.getElementById('pg-symbols').checked) charset += "!@#$%^&*()_+~`|}{[]:;?><,./-=";
+                        let password = "";
+                        for (let i = 0, n = charset.length; i < pgLength.value; ++i) {
+                            password += charset.charAt(Math.floor(Math.random() * n));
+                        }
+                        pgOutput.textContent = password;
+                    };
+                    pgOutput.onclick = () => {
+                        if(pgOutput.textContent && pgOutput.textContent !== "...") {
+                            navigator.clipboard.writeText(pgOutput.textContent).then(() => alert('Password Copied!'));
+                        }
+                    }; break;
+                case 'qr-generator':
+                     document.getElementById('qr-generate-btn').onclick = () => {
+                        const text = document.getElementById('qr-text').value;
+                        const outputDiv = document.getElementById('qr-output');
+                        if (text.trim()) {
+                            outputDiv.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(text)}" alt="QR Code">`;
+                        } else { outputDiv.textContent = 'Please enter text or a URL.'; }
+                    }; break;
+                case 'age-calculator':
+                    document.getElementById('age-calc-btn').onclick = () => {
+                        const birthdateStr = document.getElementById('birthdate').value;
+                        const output = document.getElementById('age-output');
+                        if (!birthdateStr) { output.textContent = "Please select a valid date."; return; }
+                        const birthDate = new Date(birthdateStr);
+                        if(birthDate > new Date()) { output.textContent = "Birth date cannot be in the future."; return; }
+                        const today = new Date();
+                        let age = today.getFullYear() - birthDate.getFullYear();
+                        const m = today.getMonth() - birthDate.getMonth();
+                        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) age--;
+                        output.textContent = `You are ${age} years old.`;
+                    }; break;
+                case 'bmi-calculator':
+                    document.getElementById('bmi-calc-btn').onclick = () => {
+                        const height = parseFloat(document.getElementById('bmi-height').value);
+                        const weight = parseFloat(document.getElementById('bmi-weight').value);
+                        const output = document.getElementById('bmi-output');
+                        if (height > 0 && weight > 0) {
+                            const bmi = (weight / ((height / 100) ** 2)).toFixed(2);
+                            let category = bmi < 18.5 ? "Underweight" : bmi < 24.9 ? "Normal weight" : bmi < 29.9 ? "Overweight" : "Obesity";
+                            output.textContent = `Your BMI is ${bmi} (${category}).`;
+                        } else { output.textContent = "Please enter valid, positive numbers for height and weight."; }
+                    }; break;
+                case 'color-picker':
+                    const colorInput = document.getElementById('color-input');
+                    const colorOutput = document.getElementById('color-output');
+                    const updateColor = () => {
+                        const hex = colorInput.value;
+                        const r = parseInt(hex.substr(1, 2), 16);
+                        const g = parseInt(hex.substr(3, 2), 16);
+                        const b = parseInt(hex.substr(5, 2), 16);
+                        colorOutput.innerHTML = `HEX: ${hex}<br>RGB: rgb(${r}, ${g}, ${b})`;
+                    };
+                    colorInput.oninput = updateColor; updateColor();
+                    break;
+                case 'json-formatter':
+                    document.getElementById('json-format-btn').onclick = () => {
+                        const input = document.getElementById('json-input');
+                        const output = document.getElementById('json-output');
+                        if(!input.value.trim()) { output.textContent = "Input is empty."; return; }
+                        try {
+                            const parsed = JSON.parse(input.value);
+                            output.textContent = JSON.stringify(parsed, null, 2);
+                            output.classList.remove('error');
+                        } catch (e) {
+                            output.textContent = `Invalid JSON: ${e.message}`;
+                            output.classList.add('error');
+                        }
+                    }; break;
+                case 'text-to-speech':
+                    const ttsBtn = document.getElementById('tts-speak-btn');
+                    const ttsStatus = document.getElementById('tts-status');
+                    if ('speechSynthesis' in window) {
+                        ttsBtn.onclick = () => {
+                            const text = document.getElementById('tts-input').value;
+                            if (text.trim()) {
+                                const utterance = new SpeechSynthesisUtterance(text);
+                                window.speechSynthesis.speak(utterance);
+                                ttsStatus.textContent = "Speaking...";
+                                utterance.onend = () => ttsStatus.textContent = "Finished.";
+                            } else { ttsStatus.textContent = "Please enter some text to speak."; }
+                        };
+                    } else { ttsBtn.disabled = true; ttsStatus.textContent = "Sorry, your browser does not support Text-to-Speech."; }
+                    break;
+                case 'speech-to-text':
+                    const startBtn = document.getElementById('stt-start-btn');
+                    const stopBtn = document.getElementById('stt-stop-btn');
+                    const sttOutput = document.getElementById('stt-output');
+                    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                    if (SpeechRecognition) {
+                        const recognition = new SpeechRecognition();
+                        window.speechRecognitionInstance = recognition;
+                        recognition.continuous = true; recognition.interimResults = true;
+                        recognition.onresult = e => {
+                            sttOutput.textContent = Array.from(e.results).map(r => r[0].transcript).join('');
+                        };
+                        startBtn.onclick = () => { recognition.start(); startBtn.disabled = true; stopBtn.disabled = false; };
+                        stopBtn.onclick = () => { recognition.stop(); startBtn.disabled = false; stopBtn.disabled = true; };
+                    } else { startBtn.disabled = true; sttOutput.textContent = "Sorry, your browser does not support Speech-to-Text."; }
+                    break;
+                case 'timer':
+                    let timerInterval; let startTime; let elapsedTime = 0;
+                    const display = document.getElementById('timer-display');
+                    const formatTime = (time) => {
+                        const ms = Math.floor((time % 1000) / 100);
+                        const secs = Math.floor((time / 1000) % 60);
+                        const mins = Math.floor((time / (1000 * 60)) % 60);
+                        return [mins, secs].map(v => v.toString().padStart(2, '0')).join(':') + `.${ms}`;
+                    };
+                    document.getElementById('timer-start-btn').onclick = () => {
+                        if (timerInterval) return;
+                        startTime = Date.now() - elapsedTime;
+                        timerInterval = setInterval(() => {
+                            elapsedTime = Date.now() - startTime;
+                            display.textContent = formatTime(elapsedTime);
+                        }, 100);
+                    };
+                    document.getElementById('timer-stop-btn').onclick = () => { clearInterval(timerInterval); timerInterval = null; };
+                    document.getElementById('timer-reset-btn').onclick = () => {
+                        clearInterval(timerInterval); timerInterval = null; elapsedTime = 0;
+                        display.textContent = "00:00.0";
+                    }; break;
+            }
+        }
+    });
+    </script>
+</body>
+</html>
